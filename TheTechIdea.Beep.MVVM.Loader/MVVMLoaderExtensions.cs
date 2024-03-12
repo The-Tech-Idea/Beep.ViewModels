@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using TheTechIdea.Beep.MVVM.Modules;
+
 using TheTechIdea.Tools;
 using TheTechIdea.Util;
 
@@ -98,11 +98,11 @@ namespace AppExtensionsLoader
                         // Get IBranch Definitions
                         //-------------------------------------------------------
                         //Get IAppBuilder  Definitions
-                        if (type.ImplementedInterfaces.Contains(typeof(BaseViewModel)))
-                        {
+                        //if (type.ImplementedInterfaces.Contains(typeof(BaseViewModel)))
+                        //{
 
-                            Loader.ConfigEditor.AppComponents.Add(Loader.GetAssemblyClassDefinition(type, type.Name));
-                        }
+                        //    Loader.ConfigEditor.AppComponents.Add(Loader.GetAssemblyClassDefinition(type, type.Name));
+                        //}
                       
                       
 
