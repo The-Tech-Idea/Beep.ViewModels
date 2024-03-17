@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 using TheTechIdea.Beep.Container.Services;
-using BeepEnterprize.Vis.Module;
+using Beep.Vis.Module;
 
 
 namespace TheTechIdea.Beep.MVVM.ViewModels

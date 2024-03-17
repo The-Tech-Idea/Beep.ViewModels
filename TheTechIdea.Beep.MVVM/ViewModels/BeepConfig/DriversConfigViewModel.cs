@@ -1,4 +1,4 @@
-﻿using BeepEnterprize.Vis.Module;
+﻿using Beep.Vis.Module;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using TheTechIdea.Beep.Editor;

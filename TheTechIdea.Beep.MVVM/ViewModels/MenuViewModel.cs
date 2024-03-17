@@ -1,4 +1,4 @@
-﻿using BeepEnterprize.Vis.Module;
+﻿using Beep.Vis.Module;
 namespace TheTechIdea.Beep.MVVM.ViewModels
 {
     public class MenuViewModel : BaseViewModel
