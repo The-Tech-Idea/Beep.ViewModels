@@ -5,6 +5,7 @@ using DataManagementModels.Editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TheTechIdea.Beep.DataBase;
 using TheTechIdea.Beep.Editor;
 using TheTechIdea.Beep.Report;
 using TheTechIdea.Util;
@@ -14,6 +15,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
 {
     public partial class DataConnectionViewModel : BaseViewModel
     {
+       
         [ObservableProperty]
         UnitofWork<ConnectionProperties> dBWork;
         [ObservableProperty]
@@ -38,12 +40,15 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         string selectedpackage;
         [ObservableProperty]
         string selectedversion;
+        [ObservableProperty]
+        public List<EntityField> fields;
         public ObservableBindingList<ConnectionProperties> dataConnections =>DBWork.Units;
     
         public DataConnectionViewModel(IDMEEditor dMEEditor,IVisManager visManager) : base( dMEEditor, visManager)
         {
           //  DBWork = new UnitofWork<ConnectionDriversConfig>(DMEEditor, true, new ObservableBindingList<ConnectionDriversConfig>(DMEEditor.ConfigEditor.DataDriversClasses), "GuidID");
             dBWork = new UnitofWork<ConnectionProperties>(Editor,true, new ObservableBindingList<ConnectionProperties>(Editor.ConfigEditor.DataConnections), "GuidID");
+            
             Filters=new List<AppFilter>();
             DatasourcesCategorys= Enum.GetValues(typeof(DatasourceCategory));
             packageNames = new List<string>();
@@ -103,6 +108,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             if (DBWork != null)
             {
                 DBWork = new UnitofWork<ConnectionProperties>(Editor, true, new ObservableBindingList<ConnectionProperties>(Editor.ConfigEditor.DataConnections), "GuidID");
+                DBWork.Get();
             }
         }
         [RelayCommand]
@@ -137,6 +143,18 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                 {
                     Connection = DBWork.Units[Selectedconnectionidx];
                 }
+            }
+        }
+        [RelayCommand]
+        public void GetFields()
+        {
+            if (DBWork.EntityStructure != null)
+            {
+                Fields= DBWork.EntityStructure.Fields;
+            }
+            else
+            {
+                Fields= null;
             }
         }
     }
