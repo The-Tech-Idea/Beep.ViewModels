@@ -61,7 +61,8 @@ namespace TheTechIdea.Beep.MVVM
         List<IBranch> branchs;
         [ObservableProperty]
         IBeepService beepService;
-
+      
+        public IDMEEditor DMEEditor { get; set; }
 
         public IVisManager VisManager { get; set; }
 
@@ -73,6 +74,7 @@ namespace TheTechIdea.Beep.MVVM
         {
           
             this.editor = dMEEditor;
+            Editor = dMEEditor;
             VisManager = visManager;
             VisManager.Title = title;
             VisManager.IconUrl = logoname;
