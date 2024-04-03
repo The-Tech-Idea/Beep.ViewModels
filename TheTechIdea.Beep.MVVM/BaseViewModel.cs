@@ -2,8 +2,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
+using System.Collections.Generic;
 using System.Threading;
-
+using TheTechIdea.Beep.Container.Services;
 
 namespace TheTechIdea.Beep.MVVM
 {
@@ -24,8 +25,43 @@ namespace TheTechIdea.Beep.MVVM
         [ObservableProperty]
         CancellationToken token;
         private bool disposedValue;
+        [ObservableProperty]
+        string logoname = "SimpleODM.ico";
+        [ObservableProperty]
+        string title = "Beep - The Data Plaform";
+        [ObservableProperty]
+        string version = "";
+        [ObservableProperty]
+        string build = "";
+        [ObservableProperty]
+        string buildDate = "";
+        [ObservableProperty]
+        string buildTime = "";
+        [ObservableProperty]
+        List<MenuItem> menuItems;
+        [ObservableProperty]
+        List<MenuItem> toolBarItems;
+        [ObservableProperty]
+        List<MenuItem> contextMenuItems;
+        [ObservableProperty]
+        List<MenuItem> statusItems;
+        [ObservableProperty]
+        List<MenuItem> quickAccessItems;
+        [ObservableProperty]
+        List<MenuItem> helpItems;
+        [ObservableProperty]
+        List<MenuItem> settingsItems;
+        [ObservableProperty]
+        List<MenuItem> userItems;
+        [ObservableProperty]
+        List<MenuItem> adminItems;
+        [ObservableProperty]
+        List<MenuItem> developerItems;
+        [ObservableProperty]
+        List<IBranch> branchs;
+        [ObservableProperty]
+        IBeepService beepService;
 
-     
 
         public IVisManager VisManager { get; set; }
 
@@ -38,6 +74,8 @@ namespace TheTechIdea.Beep.MVVM
           
             this.editor = dMEEditor;
             VisManager = visManager;
+            VisManager.Title = title;
+            VisManager.IconUrl = logoname;
             waitprogress =new Progress<PassedArgs>(AddWait);
             logprogress = new Progress<PassedArgs>(AddLog);
             token =new CancellationToken();
