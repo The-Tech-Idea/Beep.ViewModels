@@ -14,7 +14,7 @@ using TheTechIdea.Util;
 
 namespace TheTechIdea.Beep.MVVM.ViewModels
 {
-    public partial class EntityCreatorViewModel : BaseViewModel
+    public partial class EntityManagerViewModel : BaseViewModel
     {
         [ObservableProperty]
         string entityName;
@@ -26,8 +26,9 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
         IEnumerable<DatatypeMapping> datatypeMappings;
         [ObservableProperty]
         List<EntityField> oldfields;
+        
+        public ObservableBindingList<EntityField> newfields => dBWork.Units;
         [ObservableProperty]
-        List<EntityField> newfields;
         UnitofWork<EntityField> dBWork;
         [ObservableProperty]
         bool isChanged=false;
@@ -35,9 +36,9 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
         bool isNew = false;
         IDataSource SourceConnection;
         DataTable tb;
-        public EntityCreatorViewModel(IDMEEditor Editor, IVisManager visManager) : base(Editor, visManager)
+        public EntityManagerViewModel(IDMEEditor Editor, IVisManager visManager) : base(Editor, visManager)
         {
-            // unitofwork = new UnitofWork<EntityField>(Editor, true, new ObservableBindingList<EntityField>(fields), "GuidID");
+            // dBWork = new UnitofWork<EntityField>(Editor, true, new ObservableBindingList<EntityField>(fields), "GuidID");
             //dBWork.PreInsert += Unitofwork_PreInsert;
 
         }
@@ -71,7 +72,6 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
                 IsChanged = false;
                 Structure = entity;
                 Oldfields = Structure.Fields;
-                Newfields = Structure.Fields;
                 dBWork = new UnitofWork<EntityField>(Editor, true, new ObservableBindingList<EntityField>(Structure.Fields), "GuidID");
             }
         }
@@ -91,7 +91,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
                 ApplyChanges();
                 dBWork.Commit(Logprogress,Token);
                 Oldfields = Structure.Fields;
-                Newfields = Structure.Fields;
+              
             }
         }
         [RelayCommand]
