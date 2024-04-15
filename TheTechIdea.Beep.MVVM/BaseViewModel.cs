@@ -72,6 +72,7 @@ namespace TheTechIdea.Beep.MVVM
         }
         public BaseViewModel(IDMEEditor dMEEditor, IVisManager visManager)
         {
+            this.DMEEditor = dMEEditor;
           
             this.editor = dMEEditor;
             Editor = dMEEditor;

@@ -28,8 +28,8 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
         List<string> fromClasses;
         [ObservableProperty]
         List<string> toClasses;
-        [ObservableProperty]
-        UnitofWork<Function2FunctionAction> dBWork;
+       
+        UnitofWork<Function2FunctionAction> DBWork;
         [ObservableProperty]
         List<string> actiontypes;
         [ObservableProperty]
@@ -40,9 +40,13 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
 
         public FunctionToFunctionMappingViewModel(IDMEEditor Editor, IVisManager visManager) : base(Editor, visManager)
         {
+             DMEEditor=Editor;
+            VisManager = visManager;
              DBWork = new UnitofWork<Function2FunctionAction>(Editor, true, new ObservableBindingList<Function2FunctionAction>(DMEEditor.ConfigEditor.Function2Functions), "GuidID");
              DBWork.PreInsert += Unitofwork_PreInsert;
-             
+            ToClasses=new   List<string>();
+            FromClasses=new   List<string>();   
+            Actiontypes=new   List<string>();
             foreach (var item in DMEEditor.ConfigEditor.BranchesClasses)
             {
                 ToClasses.Add(item.className);
