@@ -10,6 +10,7 @@ using TheTechIdea.Beep.Editor;
 using TheTechIdea.Beep.Report;
 using TheTechIdea.Util;
 
+using TheTechIdea.Beep.Container.Services;
 
 namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
 {
@@ -44,7 +45,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         public List<EntityField> fields;
         public ObservableBindingList<ConnectionProperties> dataConnections =>DBWork.Units;
     
-        public DataConnectionViewModel(IDMEEditor dMEEditor,IVisManager visManager) : base( dMEEditor, visManager)
+        public DataConnectionViewModel(IBeepService beepService) : base( beepService)
         {
           //  DBWork = new UnitofWork<ConnectionDriversConfig>(DMEEditor, true, new ObservableBindingList<ConnectionDriversConfig>(Editor.ConfigEditor.DataDriversClasses), "GuidID");
             dBWork = new UnitofWork<ConnectionProperties>(Editor,true, new ObservableBindingList<ConnectionProperties>(Editor.ConfigEditor.DataConnections), "GuidID");

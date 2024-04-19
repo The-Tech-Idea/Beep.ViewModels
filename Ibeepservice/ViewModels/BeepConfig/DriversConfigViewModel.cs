@@ -9,6 +9,8 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System;
 
+using TheTechIdea.Beep.Container.Services;
+
 namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
 {
     public partial class DriversConfigViewModel : BaseViewModel
@@ -24,9 +26,9 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         [ObservableProperty]
         List<string> listofImages;
 
-        public DriversConfigViewModel(IDMEEditor dMEEditor,IVisManager visManager) : base( dMEEditor, visManager)
+        public DriversConfigViewModel(IBeepService beepService) : base( beepService)
         {
-            DBWork = new UnitofWork<ConnectionDriversConfig>(dMEEditor, true, new ObservableBindingList<ConnectionDriversConfig>(Editor.ConfigEditor.DataDriversClasses), "GuidID");
+            DBWork = new UnitofWork<ConnectionDriversConfig>(Editor, true, new ObservableBindingList<ConnectionDriversConfig>(Editor.ConfigEditor.DataDriversClasses), "GuidID");
             DBAssemblyClasses = Editor.ConfigEditor.DataSourcesClasses;
             DataSourceCategories = new List<object>();
             dataSourceTypes = new List<object>();
@@ -38,7 +40,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             {
                 DataSourceTypes.Add(item);
             }
-            listofImages = visManager.visHelper.GetImageNames();
+            listofImages = VisManager.visHelper.GetImageNames();
         }
 
         [RelayCommand]

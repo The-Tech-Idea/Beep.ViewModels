@@ -9,6 +9,8 @@ using DataManagementModels.Editor;
 using TheTechIdea.Util;
 using System.Linq;
 
+
+
 namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
 {
     public partial class DataTypeMappingViewModel : BaseViewModel
@@ -19,10 +21,10 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         string[] dataTypes;
 
         public UnitofWork<DatatypeMapping> DBWork { get; set; }
-        public DataTypeMappingViewModel(IDMEEditor dMEEditor,IVisManager visManager) : base( dMEEditor, visManager)
+        public DataTypeMappingViewModel(IBeepService beepService) : base( beepService)
         {
             
-            DBWork = new UnitofWork<DatatypeMapping>(dMEEditor, true, new ObservableBindingList<DatatypeMapping>(Editor.ConfigEditor.DataTypesMap), "GuidID");
+            DBWork = new UnitofWork<DatatypeMapping>(Editor, true, new ObservableBindingList<DatatypeMapping>(Editor.ConfigEditor.DataTypesMap), "GuidID");
             dataTypes = Editor.typesHelper.GetNetDataTypes2();
             dataClasses=Editor.typesHelper.GetDataClasses();
         }

@@ -9,7 +9,7 @@ using System.Data;
 using System.Linq;
 using TheTechIdea.Beep.DataBase;
 using TheTechIdea.Beep.Editor;
-
+using TheTechIdea.Beep.Container.Services;
 using TheTechIdea.Util;
 
 namespace TheTechIdea.Beep.MVVM.ViewModels
@@ -36,10 +36,8 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
         bool isNew = false;
         IDataSource SourceConnection;
         DataTable tb;
-        public EntityManagerViewModel(IDMEEditor pEditor, IVisManager visManager) : base(pEditor, visManager)
+        public EntityManagerViewModel(IBeepService beepService) : base(beepService)
         {
-            Editor = pEditor;
-            VisManager = visManager;
             // dBWork = new UnitofWork<EntityField>(Editor, true, new ObservableBindingList<EntityField>(fields), "GuidID");
             //dBWork.PreInsert += Unitofwork_PreInsert;
 

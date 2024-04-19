@@ -94,12 +94,11 @@ namespace TheTechIdea.Beep.MVVM
         {
                 
         }
-        public BaseViewModel(IDMEEditor peditor, IVisManager visManager)
+        public BaseViewModel(IBeepService beepService)
         {
-          
-            Editor = peditor;
-
-            VisManager = visManager;
+            this.beepService = beepService;
+            Editor = beepService.DMEEditor;
+            VisManager = beepService.vis;
             VisManager.Title = title;
             VisManager.IconUrl = logoname;
             waitprogress =new Progress<PassedArgs>(AddWait);

@@ -12,6 +12,8 @@ using TheTechIdea.Beep.Editor;
 using DataManagementModels.ConfigUtil;
 using TheTechIdea.Util;
 
+using TheTechIdea.Beep.Container.Services;
+
 namespace TheTechIdea.Beep.MVVM.ViewModels
 {
     public partial class FunctionToFunctionMappingViewModel : BaseViewModel
@@ -38,10 +40,9 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
         AddinType toClassType;
         public ObservableBindingList<Function2FunctionAction> Function2FunctionActions => DBWork.Units;
 
-        public FunctionToFunctionMappingViewModel(IDMEEditor pEditor, IVisManager visManager) : base(pEditor, visManager)
+        public FunctionToFunctionMappingViewModel(IBeepService beepService) : base(beepService)
         {
-             Editor=pEditor;
-            VisManager = visManager;
+          
              DBWork = new UnitofWork<Function2FunctionAction>(Editor, true, new ObservableBindingList<Function2FunctionAction>(Editor.ConfigEditor.Function2Functions), "GuidID");
              DBWork.PreInsert += Unitofwork_PreInsert;
             ToClasses=new   List<string>();
