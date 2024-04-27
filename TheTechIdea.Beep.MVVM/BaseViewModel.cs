@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using TheTechIdea.Beep.Container.Services;
+using TheTechIdea.Beep.DataBase;
+using TheTechIdea.Util;
 
 namespace TheTechIdea.Beep.MVVM
 {
@@ -87,7 +89,16 @@ namespace TheTechIdea.Beep.MVVM
         List<IBranch> branchs;
         [ObservableProperty]
         IBeepService beepService;
-      
+        [ObservableProperty]
+        IErrorsInfo errorObject;
+        [ObservableProperty]
+        EntityStructure currentEntity;
+        [ObservableProperty]
+        IDataSource currDataSource;
+        [ObservableProperty]
+        string currentEntityName;
+        [ObservableProperty]
+        string currentDataSourceName;
         public IVisManager VisManager { get; set; }
 
         public BaseViewModel()
