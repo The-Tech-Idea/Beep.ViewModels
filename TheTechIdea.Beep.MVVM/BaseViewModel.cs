@@ -56,7 +56,7 @@ namespace TheTechIdea.Beep.MVVM
         [ObservableProperty]
         string logoname = "SimpleODM.ico";
         [ObservableProperty]
-        string title = "Beep - The Data Plaform";
+        string title = "is Plaform";
         [ObservableProperty]
         string version = "";
         [ObservableProperty]
@@ -111,6 +111,7 @@ namespace TheTechIdea.Beep.MVVM
             Editor = peditor;
 
             VisManager = visManager;
+            
             VisManager.Title = title;
             VisManager.IconUrl = logoname;
             waitprogress =new Progress<PassedArgs>(AddWait);
