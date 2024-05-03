@@ -5,6 +5,7 @@ using DataManagementModels.Editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using TheTechIdea.Beep.DataBase;
 using TheTechIdea.Beep.Editor;
 using TheTechIdea.Beep.Report;
@@ -33,6 +34,8 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         [ObservableProperty]
         int selectedconnectionidx;
         [ObservableProperty]
+        string selectedconnectionGuid;
+        [ObservableProperty]
         List<string> packageNames;
         [ObservableProperty]
         List<string> packageVersions;
@@ -42,14 +45,15 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         string selectedversion;
         [ObservableProperty]
         public List<EntityField> fields;
-        public ObservableBindingList<ConnectionProperties> dataConnections =>DBWork.Units;
+        public ObservableBindingList<ConnectionProperties> DataConnections =>DBWork.Units;
     
         public DataConnectionViewModel(IDMEEditor dMEEditor,IVisManager visManager) : base( dMEEditor, visManager)
         {
           //  DBWork = new UnitofWork<ConnectionDriversConfig>(DMEEditor, true, new ObservableBindingList<ConnectionDriversConfig>(Editor.ConfigEditor.DataDriversClasses), "GuidID");
             dBWork = new UnitofWork<ConnectionProperties>(Editor,true, new ObservableBindingList<ConnectionProperties>(Editor.ConfigEditor.DataConnections), "GuidID");
-            
-            Filters=new List<AppFilter>();
+            ConnectionProperties connection=new ConnectionProperties();
+         
+            Filters =new List<AppFilter>();
             DatasourcesCategorys= Enum.GetValues(typeof(DatasourceCategory));
             packageNames = new List<string>();
             packageVersions = new List<string>();
@@ -80,13 +84,20 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                 Editor.ConfigEditor.SaveDataconnectionsValues();
             }
         }
-
         [RelayCommand]
         public void Add()
         {
             Connection = new ConnectionProperties();
             if (DBWork != null)
             {
+                if(SelectedCategoryItem != null)
+                {
+                    Connection.Category = SelectedCategoryItem;
+                }
+                if(SelectedCategoryItem!=null)
+                {
+                    Connection.Category = SelectedCategoryItem;
+                }
                 DBWork.Create(Connection);
             }
         }
@@ -105,11 +116,32 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         [RelayCommand]
         public void Get()
         {
-            if (DBWork != null)
+            if (DBWork == null)
             {
                 DBWork = new UnitofWork<ConnectionProperties>(Editor, true, new ObservableBindingList<ConnectionProperties>(Editor.ConfigEditor.DataConnections), "GuidID");
                 DBWork.Get();
             }
+        }
+        [RelayCommand]
+        public void GetByGuid()
+        {
+            if (DBWork == null)
+            {
+                DBWork = new UnitofWork<ConnectionProperties>(Editor, true, new ObservableBindingList<ConnectionProperties>(Editor.ConfigEditor.DataConnections), "GuidID");
+               
+            }
+            if(SelectedconnectionGuid != null)
+            {
+                if (!string.IsNullOrEmpty(SelectedconnectionGuid))
+                {
+                    DBWork.Get(new List<AppFilter>() { new AppFilter() { FieldName = "GuidID", FilterValue = $"{SelectedconnectionGuid}", Operator = "=" } });
+                }
+            }
+            if(DBWork.Units.Count > 0)
+            {
+                Connection = DBWork.Units[0];
+            }
+            
         }
         [RelayCommand]
         public void Filter()
