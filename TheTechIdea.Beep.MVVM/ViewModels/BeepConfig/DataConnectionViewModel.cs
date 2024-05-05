@@ -79,8 +79,24 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         {
             if (DBWork != null)
             {
-
+                if (Connection != null)
+                {
+                    DBWork.Update(Connection);
+                }
+                DBWork.Commit();
                 Editor.ConfigEditor.DataConnections = DBWork.Units.ToList();
+                Editor.ConfigEditor.SaveDataconnectionsValues();
+            }
+        }
+        [RelayCommand]
+        public void UpdateConnection()
+        {
+            if (DBWork != null)
+            {
+                if(Connection!= null    )
+                {
+                    DBWork.Update(Connection);
+                }
                 Editor.ConfigEditor.SaveDataconnectionsValues();
             }
         }
