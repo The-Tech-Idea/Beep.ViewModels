@@ -70,11 +70,8 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         string connectionString;
         [ObservableProperty]
         string userId;
-
-        bool IsNew = false;
-
+      
         public ObservableBindingList<ConnectionProperties> DataConnections => DBWork.Units;
-
         public DataConnectionViewModel(IDMEEditor dMEEditor, IVisManager visManager) : base(dMEEditor, visManager)
         {
             //  DBWork = new UnitofWork<ConnectionDriversConfig>(DMEEditor, true, new ObservableBindingList<ConnectionDriversConfig>(Editor.ConfigEditor.DataDriversClasses), "GuidID");
@@ -284,7 +281,6 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                         {
                             Connection.FilePath.Replace(Editor.ConfigEditor.ExePath, ".");
                         }
-                        //  Connection.Host = "localhost";
                         Connection.UserID = "";
                         Connection.Password = Password;
                         DBWork.Create(Connection);
