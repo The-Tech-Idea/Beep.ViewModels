@@ -13,6 +13,18 @@ namespace TheTechIdea.Beep.MVVM
     public partial class BaseViewModel : ObservableObject,IDisposable
     {
         [ObservableProperty]
+        bool isDirty;
+        [ObservableProperty]
+        bool isChanged;
+        [ObservableProperty]
+        bool isCreated;
+        [ObservableProperty]
+        bool isUpdated;
+        [ObservableProperty]
+        bool isDeleted;
+        [ObservableProperty]
+        bool isAdded;
+        [ObservableProperty]
         bool isBusy;
         [ObservableProperty]
         bool isReady;
