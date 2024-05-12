@@ -27,7 +27,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
         [ObservableProperty]
         List<EntityField> oldfields;
         
-        public ObservableBindingList<EntityField> newfields => dBWork.Units;
+        public ObservableBindingList<EntityField> newfields => DBWork.Units;
         [ObservableProperty]
         UnitofWork<EntityField> dBWork;
         [ObservableProperty]
@@ -74,7 +74,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
                 IsChanged = false;
                 Structure = entity;
                 Oldfields = Structure.Fields;
-                dBWork = new UnitofWork<EntityField>(Editor, true, new ObservableBindingList<EntityField>(Structure.Fields), "GuidID");
+                DBWork = new UnitofWork<EntityField>(Editor, true, new ObservableBindingList<EntityField>(Structure.Fields), "GuidID");
             }
         }
         [RelayCommand]
@@ -91,7 +91,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
                 IsNew = false;
 
                 ApplyChanges();
-                dBWork.Commit(Logprogress,Token);
+                DBWork.Commit(Logprogress,Token);
                 Oldfields = Structure.Fields;
               
             }
@@ -110,8 +110,8 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
                     try
                     {
                        // Apply for New Entity
-                        IDataSource SourceConnection = Editor.GetDataSource(datasourcename);
-                        Editor.OpenDataSource(datasourcename);
+                        IDataSource SourceConnection = Editor.GetDataSource(Datasourcename);
+                        Editor.OpenDataSource(Datasourcename);
                         //SourceConnection.Dataconnection.OpenConnection();
                         SourceConnection.ConnectionStatus = SourceConnection.Dataconnection.ConnectionStatus;
                         if (SourceConnection.ConnectionStatus == ConnectionState.Open)
@@ -164,9 +164,9 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
                 IsChanged = false;
                 IsNew = true;
 
-                dBWork = new UnitofWork<EntityField>(Editor, true, new ObservableBindingList<EntityField>(Structure.Fields), "GuidID");
-                dBWork.PreInsert -= Unitofwork_PreInsert;
-                dBWork.PreInsert += Unitofwork_PreInsert;
+                DBWork = new UnitofWork<EntityField>(Editor, true, new ObservableBindingList<EntityField>(Structure.Fields), "GuidID");
+                DBWork.PreInsert -= Unitofwork_PreInsert;
+                DBWork.PreInsert += Unitofwork_PreInsert;
             }
         }
         
