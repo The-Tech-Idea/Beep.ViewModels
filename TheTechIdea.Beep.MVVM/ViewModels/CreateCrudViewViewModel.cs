@@ -56,8 +56,21 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
             {
                 var uow = UnitOfWorkFactory.CreateUnitOfWork(EntityType, Editor, DatasourceName, Entityname, Structure, PrimaryKey);
                 unitOfWork = new UnitOfWorkWrapper(uow);
-                Ts= unitOfWork.Get().Result;
-
+                var result= unitOfWork.Get().Result;
+                // Ensure Ts is ObservableBindingList<object>
+                if (result is DataTable dataTable)
+                {
+                    Ts = (IBindingListView)Editor.Utilfunction.GetBindingListByDataTable(result, EntityType,Structure);
+                }
+                else if (result is List<object> list)
+                {
+                    Ts = Editor.Utilfunction.GetBindingListFromIList(result, EntityType, Structure);
+                }
+                else 
+                {
+                    Ts = result; // Directly use if already ObservableBindingList<object>
+                }
+               
             }
             catch (Exception ex)
             {
@@ -95,6 +108,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
                Editor.AddLogMessage("Fail", $"Could not find entity {Entityname}", DateTime.Now, 0, DatasourceName, Errors.Failed);
                 return false;
             }
+         
             if (Structure.Fields.Count > 0)
             {
                 if (Structure.PrimaryKeys.Count == 0)
