@@ -54,22 +54,23 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
         {
             try
             {
+                EntityType = DataSource.GetEntityType(Entityname);
                 var uow = UnitOfWorkFactory.CreateUnitOfWork(EntityType, Editor, DatasourceName, Entityname, Structure, PrimaryKey);
                 unitOfWork = new UnitOfWorkWrapper(uow);
                 var result= unitOfWork.Get().Result;
                 // Ensure Ts is ObservableBindingList<object>
-                if (result is DataTable dataTable)
-                {
-                    Ts = (IBindingListView)Editor.Utilfunction.GetBindingListByDataTable(result, EntityType,Structure);
-                }
-                else if (result is List<object> list)
-                {
-                    Ts = Editor.Utilfunction.GetBindingListFromIList(result, EntityType, Structure);
-                }
-                else 
-                {
+                //if (result is DataTable dataTable)
+                //{
+                //    Ts = (IBindingListView)Editor.Utilfunction.GetBindingListByDataTable(result, EntityType,Structure);
+                //}
+                //else if (result is List<object> list)
+                //{
+                //    Ts = Editor.Utilfunction.GetBindingListFromIList(result, EntityType, Structure);
+                //}
+                //else 
+                //{
                     Ts = result; // Directly use if already ObservableBindingList<object>
-                }
+             //   }
                
             }
             catch (Exception ex)
