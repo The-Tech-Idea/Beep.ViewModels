@@ -5,6 +5,7 @@ using DataManagementModels.DriversConfigurations;
 using DataManagementModels.Editor;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using TheTechIdea.Beep.DataBase;
 using TheTechIdea.Beep.Editor;
@@ -69,6 +70,9 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         string connectionString;
         [ObservableProperty]
         string userId;
+        [ObservableProperty]
+        string installFolderPath;
+        
       
         public ObservableBindingList<ConnectionProperties> DataConnections => DBWork.Units;
         public DataConnectionViewModel(IDMEEditor dMEEditor, IVisManager visManager) : base(dMEEditor, visManager)
@@ -282,7 +286,92 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                         }
                         Connection.UserID = "";
                         Connection.Password = Password;
-                        DBWork.Create(Connection);
+                      //  DBWork.Create(Connection);
+                        Save();
+                        //-----------------------------------------------------
+                        IDataSource ds = Editor.CreateLocalDataSourceConnection(Connection, DatabaseName, SelectedEmbeddedDatabaseType.classHandler);
+                        IsSaved = true;
+                        if (ds != null)
+                        {
+                            ILocalDB dB = (ILocalDB)ds;
+                            bool ok = dB.CreateDB();
+                            if (ok)
+                            {
+                                //ds.ConnectionStatus = ds.Dataconnection.OpenConnection();
+                                Editor.OpenDataSource(Connection.ConnectionName);
+                            }
+                            IsCreated = true;
+                        }
+                        else
+                        {
+                            Editor.AddLogMessage("Beep", $"Could not Create Local/Embedded Database", DateTime.Now, -1, null, Errors.Failed);
+                        }
+                        //-----------------------------------------------------
+                    }
+                    else
+                    {
+                        Editor.AddLogMessage("Beep", $"Error could not find databse drivers for  Local DB  ", DateTime.Now, -1, null, Errors.Failed);
+
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    Editor.AddLogMessage("Beep", $"Error creating Local DB - {ex.Message}", DateTime.Now, -1, null, Errors.Failed);
+
+                }
+
+            }
+        }
+        [RelayCommand]
+        public void CreateLocalConnectionUsingPath()
+        {
+            if (!string.IsNullOrEmpty(InstallFolderPath))
+            {
+                if (!Directory.Exists(installFolderPath))
+                {
+                    ErrorObject.Flag = Errors.Failed;
+                    ErrorObject.Message = $"Folder {installFolderPath} does not exist";
+                    return;
+                }
+
+            }
+            if (DBWork != null && !string.IsNullOrEmpty(InstallFolderPath))
+            {
+                try
+                {
+                    IsSaved = false;
+                    IsNew = true;
+                    IsCreated = false;
+                    Connection = new ConnectionProperties();
+                    if (SelectedEmbeddedDatabaseType != null)
+                    {
+                        Connection.Category = SelectedEmbeddedDatabaseType.DatasourceCategory;//(DatasourceCategory)(int) Enum.Parse(typeof( DatasourceCategory),CategorycomboBox.Text);
+                        Connection.DatabaseType = SelectedEmbeddedDatabaseType.DatasourceType; //(DataSourceType)(int)Enum.Parse(typeof(DataSourceType), DatabaseTypecomboBox.Text);
+                        Connection.ConnectionName = DatabaseName;
+                        Connection.DriverName = SelectedEmbeddedDatabaseType.PackageName;
+                        Connection.DriverVersion = SelectedEmbeddedDatabaseType.version;
+                        if (Editor.ConfigEditor.DataConnections.Count == 0)
+                        {
+                            Connection.ID = 1;
+                        }
+                        else
+                        {
+                            Connection.ID = Editor.ConfigEditor.DataConnections.Max(y => y.ID) + 1;
+                        }
+
+                        Connection.FilePath = $@"{InstallFolderPath}";
+                        Connection.FileName = DatabaseName;
+                        Connection.IsLocal = true;
+
+                        Connection.ConnectionString = SelectedEmbeddedDatabaseType.ConnectionString; //Path.Combine(Connection.FilePath, Connection.FileName);
+                        if (Connection.FilePath.Contains(Editor.ConfigEditor.ExePath))
+                        {
+                            Connection.FilePath.Replace(Editor.ConfigEditor.ExePath, ".");
+                        }
+                        Connection.UserID = "";
+                        Connection.Password = Password;
+              //          DBWork.Create(Connection);
                         Save();
                         //-----------------------------------------------------
                         IDataSource ds = Editor.CreateLocalDataSourceConnection(Connection, DatabaseName, SelectedEmbeddedDatabaseType.classHandler);
