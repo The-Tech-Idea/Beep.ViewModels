@@ -11,6 +11,7 @@ using TheTechIdea.Beep.DataBase;
 using TheTechIdea.Beep.Editor;
 using TheTechIdea.Beep.Report;
 using TheTechIdea.Util;
+using TheTechIdea.Beep.Helpers;
 
 
 namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
@@ -328,6 +329,12 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         {
             if (!string.IsNullOrEmpty(InstallFolderPath))
             {
+                if (InstallFolderPath.StartsWith(".") || InstallFolderPath.Equals("/") || InstallFolderPath.Equals("\\"))
+                {
+                    string fullPath = Path.Combine(Editor.ConfigEditor.ExePath, InstallFolderPath.TrimStart('.', '/', '\\'));
+                    InstallFolderPath = fullPath;
+                    //  = ConnectionProp.FilePath.Replace(".", DMEEditor.ConfigEditor.ExePath);
+                }
                 if (!Directory.Exists(installFolderPath))
                 {
                     ErrorObject.Flag = Errors.Failed;

@@ -4,7 +4,7 @@
 	  <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <LangVersion>Latest</LangVersion>
-	  <Version>1.0.7</Version>
+	  <Version>1.0.8</Version>
 	  <Authors>The Tech Idea</Authors>
 	  <Description>MVVM  used to standarized GUI/UI for Beep Apps</Description>
 	  <PackageProjectUrl>https://github.com/The-Tech-Idea/BeepEnterprize.winform</PackageProjectUrl>
@@ -30,7 +30,7 @@
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="TheTechIdea.Beep.Container.Model" Version="1.0.0.29" />
-    <PackageReference Include="TheTechIdea.Beep.DataManagementEngine" Version="1.0.483" />
+    <PackageReference Include="TheTechIdea.Beep.DataManagementEngine" Version="1.0.487" />
     <PackageReference Include="TheTechIdea.Beep.DataManagementModels" Version="1.0.196" />
     <PackageReference Include="TheTechIdea.Beep.Vis.Modules" Version="1.0.110" />
   </ItemGroup>
