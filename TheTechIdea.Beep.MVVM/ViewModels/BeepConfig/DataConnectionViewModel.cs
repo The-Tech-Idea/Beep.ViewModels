@@ -12,6 +12,8 @@ using TheTechIdea.Beep.Editor;
 using TheTechIdea.Beep.Report;
 using TheTechIdea.Util;
 using TheTechIdea.Beep.Helpers;
+using TheTechIdea.Beep.InMemory;
+using DataManagementModels.DataBase;
 
 
 namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
@@ -51,6 +53,10 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         List<ConnectionDriversConfig> embeddedDatabaseTypes;
         [ObservableProperty]
         ConnectionDriversConfig selectedEmbeddedDatabaseType;
+        [ObservableProperty]
+        List<ConnectionDriversConfig> inMemoryDatabaseTypes;
+        [ObservableProperty]
+        ConnectionDriversConfig selectedinMemoryDatabaseType;
         [ObservableProperty]
         string embeddedDatabaseType;
         [ObservableProperty]
@@ -106,29 +112,41 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             {
                 embeddedDatabaseTypes.Add(cls);
             }
-
+            GetInMemoryDriverConfigs();
+            
         }
         [RelayCommand]
         public void Save()
         {
             if (DBWork != null)
             {
-                if (Connection != null)
-                {
-                    if (IsNew)
-                    {
-                        DBWork.Create(Connection);
-                    }
-                    else
-                    {
-                        DBWork.Update(Connection);
-                    }
+                //if (Connection != null)
+                //{
+                //    if (IsNew)
+                //    {
+                //        DBWork.Create(Connection);
+                //    }
+                //    else
+                //    {
+                //        DBWork.Update(Connection);
+                //    }
 
+                //}
+                try
+                {
+                    DBWork.Commit();
+                    IsNew = false;
+                    Editor.ConfigEditor.DataConnections = DBWork.Units.ToList();
+                    Editor.ConfigEditor.SaveDataconnectionsValues();
+                    IsSaved = true;
                 }
-                DBWork.Commit();
-                IsNew = false;
-                Editor.ConfigEditor.DataConnections = DBWork.Units.ToList();
-                Editor.ConfigEditor.SaveDataconnectionsValues();
+                catch (Exception ex)
+                {
+                    IsSaved = false;
+                    Editor.AddLogMessage("Beep", $"Error Saving Connection - {ex.Message}", DateTime.Now, -1, null, Errors.Failed);
+                }
+                
+
             }
         }
         [RelayCommand]
@@ -150,14 +168,6 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             Connection = new ConnectionProperties();
             if (DBWork != null)
             {
-                if (SelectedCategoryItem != null)
-                {
-                    Connection.Category = SelectedCategoryItem;
-                }
-                if (SelectedCategoryItem != null)
-                {
-                    Connection.Category = SelectedCategoryItem;
-                }
                 DBWork.Create(Connection);
             }
         }
@@ -291,22 +301,25 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                         Save();
                         //-----------------------------------------------------
                         IDataSource ds = Editor.CreateLocalDataSourceConnection(Connection, DatabaseName, SelectedEmbeddedDatabaseType.classHandler);
-                        IsSaved = true;
-                        if (ds != null)
+                        if (IsSaved)
                         {
-                            ILocalDB dB = (ILocalDB)ds;
-                            bool ok = dB.CreateDB();
-                            if (ok)
+                            if (ds != null)
                             {
-                                //ds.ConnectionStatus = ds.Dataconnection.OpenConnection();
-                                Editor.OpenDataSource(Connection.ConnectionName);
+                                ILocalDB dB = (ILocalDB)ds;
+                                bool ok = dB.CreateDB();
+                                if (ok)
+                                {
+                                    //ds.ConnectionStatus = ds.Dataconnection.OpenConnection();
+                                    Editor.OpenDataSource(Connection.ConnectionName);
+                                }
+                                IsCreated = true;
                             }
-                            IsCreated = true;
+                            else
+                            {
+                                Editor.AddLogMessage("Beep", $"Could not Create Local/Embedded Database", DateTime.Now, -1, null, Errors.Failed);
+                            }
                         }
-                        else
-                        {
-                            Editor.AddLogMessage("Beep", $"Could not Create Local/Embedded Database", DateTime.Now, -1, null, Errors.Failed);
-                        }
+                        
                         //-----------------------------------------------------
                     }
                     else
@@ -350,7 +363,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                     IsSaved = false;
                     IsNew = true;
                     IsCreated = false;
-                    Connection = new ConnectionProperties();
+                     Add();
                     if (SelectedEmbeddedDatabaseType != null)
                     {
                         Connection.Category = SelectedEmbeddedDatabaseType.DatasourceCategory;//(DatasourceCategory)(int) Enum.Parse(typeof( DatasourceCategory),CategorycomboBox.Text);
@@ -381,19 +394,28 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
               //          DBWork.Create(Connection);
                         Save();
                         //-----------------------------------------------------
+                        Save();
+                        //-----------------------------------------------------
                         IDataSource ds = Editor.CreateLocalDataSourceConnection(Connection, DatabaseName, SelectedEmbeddedDatabaseType.classHandler);
-                        IsSaved = true;
-                        if (ds != null)
+                        if (IsSaved)
                         {
-                            ILocalDB dB = (ILocalDB)ds;
-                            bool ok = dB.CreateDB();
-                            if (ok)
+                            if (ds != null)
                             {
-                                //ds.ConnectionStatus = ds.Dataconnection.OpenConnection();
-                                Editor.OpenDataSource(Connection.ConnectionName);
+                                ILocalDB dB = (ILocalDB)ds;
+                                bool ok = dB.CreateDB();
+                                if (ok)
+                                {
+                                    //ds.ConnectionStatus = ds.Dataconnection.OpenConnection();
+                                    Editor.OpenDataSource(Connection.ConnectionName);
+                                }
+                                IsCreated = true;
                             }
-                            IsCreated = true;
+                            else
+                            {
+                                Editor.AddLogMessage("Beep", $"Could not Create Local/Embedded Database", DateTime.Now, -1, null, Errors.Failed);
+                            }
                         }
+                   
                         else
                         {
                             Editor.AddLogMessage("Beep", $"Could not Create Local/Embedded Database", DateTime.Now, -1, null, Errors.Failed);
@@ -415,6 +437,109 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
 
             }
         }
+        [RelayCommand]
+        public void CreateInMemoryConnection()
+        {
+            if (DBWork != null)
+            {
+                try
+                {
+                    IsSaved = false;
+                    IsNew = true;
+                    IsCreated = false;
+                    Add();
+                    if (SelectedinMemoryDatabaseType != null)
+                    {
+                        ConnectionDriversConfig package = SelectedinMemoryDatabaseType;
+                        if (package != null)
+                        {
+                            Connection.Category = DatasourceCategory.INMEMORY;//(DatasourceCategory)(int) Enum.Parse(typeof( DatasourceCategory),CategorycomboBox.Text);
+                            Connection.DatabaseType = package.DatasourceType; //(DataSourceType)(int)Enum.Parse(typeof(DataSourceType), DatabaseTypecomboBox.Text);
+                            Connection.ConnectionName = DatabaseName;
+                            Connection.DriverName = package.PackageName;
+                            Connection.DriverVersion = package.version;
+                            Connection.ID = Editor.ConfigEditor.DataConnections.Max(y => y.ID) + 1;
+                            Connection.Database = DatabaseName;
+                            Connection.IsInMemory = true;
+                            Connection.IsLocal = true;
+                            Connection.DriverName = package.PackageName;
+                            Connection.DriverVersion = package.version;
+                            Connection.ConnectionString = package.ConnectionString; //Path.Combine(dataConnection.FilePath, dataConnection.FileName);
+                            Save();
+                            //-----------------------------------------------------
 
+
+                            if (IsSaved)
+                            {
+                                IDataSource ds = Editor.GetDataSource(DatabaseName);
+                                if (ds != null)
+                                {
+                                    IInMemoryDB dB = (IInMemoryDB)ds;
+                                    IErrorsInfo ok = dB.OpenDatabaseInMemory(DatabaseName);
+                                    if (ok.Flag == Errors.Failed)
+                                    {
+                                        //ds.ConnectionStatus = ds.Dataconnection.OpenConnection();
+                                        Editor.OpenDataSource(Connection.ConnectionName);
+                                    }
+                                    IsCreated = true;
+                                }
+                                else
+                                {
+                                    Editor.AddLogMessage("Beep", $"Could not Create Local/Embedded Database", DateTime.Now, -1, null, Errors.Failed);
+                                }
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        Editor.AddLogMessage("Beep", $"Error could not find databse drivers for  Local DB  ", DateTime.Now, -1, null, Errors.Failed);
+
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    Editor.AddLogMessage("Beep", $"Error creating Local DB - {ex.Message}", DateTime.Now, -1, null, Errors.Failed);
+
+                }
+
+            }
+        }
+      
+        public  List<AssemblyClassDefinition> GetInMemoryDBs()
+        {
+            return Editor.ConfigEditor.DataSourcesClasses.Where(p => p.classProperties != null && p.InMemory == true).ToList();
+        }
+        public  void GetDriverConfiguration(string pclassname)
+        {
+            try
+            {
+               // AssemblyClassDefinition assembly = GetInMemoryDBs().Where(p => p.className == pclassname).FirstOrDefault();
+                ConnectionDriversConfig package = Editor.ConfigEditor.DataDriversClasses.Where(x => x.classHandler == pclassname).OrderByDescending(o => o.version).FirstOrDefault();
+                SelectedinMemoryDatabaseType = package;
+                
+            }
+            catch (Exception ex)
+            {
+                Editor.AddLogMessage("Beep", $"Could not Create Drivers Config {ex.Message}", DateTime.Now, -1, "", Errors.Failed);
+                SelectedinMemoryDatabaseType = null;
+            }
+        }
+        public void GetInMemoryDriverConfigs()
+        {
+            try
+            {
+                List<string> ls = GetInMemoryDBs().Select(p => p.className).ToList();
+                InMemoryDatabaseTypes = Editor.ConfigEditor.DataDriversClasses.Where(x => ls.Contains(x.classHandler) ).OrderByDescending(o => o.version).ToList();
+           }
+            catch (Exception ex)
+            {
+                InMemoryDatabaseTypes = null;
+                Editor.AddLogMessage("Beep", $"Could not Create Drivers Config {ex.Message}", DateTime.Now, -1, "", Errors.Failed);
+                
+            }
+        }
+       
     }
 }
