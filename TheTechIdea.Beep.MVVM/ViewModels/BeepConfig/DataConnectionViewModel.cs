@@ -269,7 +269,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                     IsSaved = false;
                     IsNew = true;
                     IsCreated = false;
-                    Connection = new ConnectionProperties();
+                    Add();
                     if (SelectedEmbeddedDatabaseType != null)
                     {
                         Connection.Category = SelectedEmbeddedDatabaseType.DatasourceCategory;//(DatasourceCategory)(int) Enum.Parse(typeof( DatasourceCategory),CategorycomboBox.Text);
