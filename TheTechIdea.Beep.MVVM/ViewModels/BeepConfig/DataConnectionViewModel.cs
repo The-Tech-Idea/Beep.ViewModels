@@ -86,7 +86,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         {
             //  DBWork = new UnitofWork<ConnectionDriversConfig>(DMEEditor, true, new ObservableBindingList<ConnectionDriversConfig>(Editor.ConfigEditor.DataDriversClasses), "GuidID");
             dBWork = new UnitofWork<ConnectionProperties>(Editor, true, new ObservableBindingList<ConnectionProperties>(Editor.ConfigEditor.DataConnections), "GuidID");
-            ConnectionProperties connection = new ConnectionProperties();
+          //  ConnectionProperties connection = new ConnectionProperties();
 
             Filters = new List<AppFilter>();
             DatasourcesCategorys = Enum.GetValues(typeof(DatasourceCategory));
