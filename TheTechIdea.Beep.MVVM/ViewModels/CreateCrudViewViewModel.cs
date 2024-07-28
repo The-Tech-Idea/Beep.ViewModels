@@ -42,13 +42,16 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
         string primaryKey;
         [ObservableProperty]
         bool isPrimarykeyMissing;
+        [ObservableProperty]
+        bool isCrudSupported;
 
-     
+        object uow;
 
         // Using IList to hold a list of dynamically typed entities
         UnitOfWorkWrapper unitOfWork;
         public CreateCrudViewViewModel(IDMEEditor Editor, IVisManager visManager) : base(Editor, visManager)
         {
+
         }
         public bool GetData()
         {
@@ -58,8 +61,15 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
                 {
                     EntityType = DataSource.GetEntityType(Entityname);
                 }
+                if (string.IsNullOrEmpty(primaryKey))
+                {
+                    uow = UnitOfWorkFactory.CreateUnitOfWork(EntityType, Editor, DatasourceName, Entityname, Structure);
+                }
+                else
+                {
+                    uow = UnitOfWorkFactory.CreateUnitOfWork(EntityType, Editor, DatasourceName, Entityname, Structure, PrimaryKey);
+                }
                 
-                var uow = UnitOfWorkFactory.CreateUnitOfWork(EntityType, Editor, DatasourceName, Entityname, Structure, PrimaryKey);
                 unitOfWork = new UnitOfWorkWrapper(uow);
                 var result= unitOfWork.Get().Result;
                 Ts = result; // Directly use if already ObservableBindingList<object>
@@ -100,39 +110,49 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
                Editor.AddLogMessage("Fail", $"Could not find entity {Entityname}", DateTime.Now, 0, DatasourceName, Errors.Failed);
                 return false;
             }
-         
-            if (Structure.Fields.Count > 0)
+            EntityType = DataSource.GetEntityType(Entityname);
+            if (EntityType == null)
             {
-                if (Structure.PrimaryKeys.Count == 0)
+                Editor.AddLogMessage("Fail", $"Could not find entity type for entity {Entityname}", DateTime.Now, 0, DatasourceName, Errors.Failed);
+                return false;
+            }
+            if (IsCrudSupported)
+            {
+               
+                if (Structure.Fields.Count > 0)
                 {
-                   Editor.AddLogMessage("Fail", $"Could not find primary key for entity {Entityname}, setting first column", DateTime.Now, 0, DatasourceName, Errors.Failed);
-                    PrimaryKey = Structure.Fields.FirstOrDefault().fieldname;
-                    IsPrimarykeyMissing = true;
-
-
-                }
-                else
-                {
-                    if (structure.PrimaryKeys.FirstOrDefault().fieldname == null)
+                    if (Structure.PrimaryKeys.Count == 0)
                     {
-                       Editor.AddLogMessage("Fail", $"Could not find primary key for entity {Entityname}, setting first column", DateTime.Now, 0, DatasourceName, Errors.Failed);
+                        Editor.AddLogMessage("Fail", $"Could not find primary key for entity {Entityname}, setting first column", DateTime.Now, 0, DatasourceName, Errors.Failed);
                         PrimaryKey = Structure.Fields.FirstOrDefault().fieldname;
                         IsPrimarykeyMissing = true;
-                        //   return;
+
+
                     }
                     else
                     {
-                        PrimaryKey = Structure.PrimaryKeys.FirstOrDefault().fieldname;
-                        IsPrimarykeyMissing = false;
-                    }
+                        if (structure.PrimaryKeys.FirstOrDefault().fieldname == null)
+                        {
+                            Editor.AddLogMessage("Fail", $"Could not find primary key for entity {Entityname}, setting first column", DateTime.Now, 0, DatasourceName, Errors.Failed);
+                            PrimaryKey = Structure.Fields.FirstOrDefault().fieldname;
+                            IsPrimarykeyMissing = true;
+                            //   return;
+                        }
+                        else
+                        {
+                            PrimaryKey = Structure.PrimaryKeys.FirstOrDefault().fieldname;
+                            IsPrimarykeyMissing = false;
+                        }
 
+                    }
+                }
+
+                if (IsPrimarykeyMissing)
+                {
+                    SetPrimarKey();
                 }
             }
-            EntityType = DataSource.GetEntityType(Entityname);
-            if(IsPrimarykeyMissing)
-            {
-                SetPrimarKey();
-            }
+            
             return true;
         }
         private void SetPrimarKey()
