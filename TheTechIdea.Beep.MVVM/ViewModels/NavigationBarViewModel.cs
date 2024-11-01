@@ -1,4 +1,4 @@
-﻿using Beep.Vis.Module;
+﻿using TheTechIdea.Beep.Vis.Modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using TheTechIdea.Beep.Container.Services;
-using Beep.Vis.Module;
+using TheTechIdea.Beep.Vis.Modules;
 using DataManagementModels.Editor;
 using System.Collections.Generic;
 using TheTechIdea.Beep.DataBase;
