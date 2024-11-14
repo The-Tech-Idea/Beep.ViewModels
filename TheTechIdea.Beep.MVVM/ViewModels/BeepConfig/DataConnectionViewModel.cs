@@ -1,19 +1,20 @@
 ﻿using TheTechIdea.Beep.Vis.Modules;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DataManagementModels.DriversConfigurations;
-using DataManagementModels.Editor;
+using TheTechIdea.Beep.DriversConfigurations;
+using TheTechIdea.Beep.Editor;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TheTechIdea.Beep.DataBase;
-using TheTechIdea.Beep.Editor;
+
 using TheTechIdea.Beep.Report;
-using TheTechIdea.Util;
+using TheTechIdea.Beep.Utilities;
 using TheTechIdea.Beep.Helpers;
 using TheTechIdea.Beep.InMemory;
-using DataManagementModels.DataBase;
+using TheTechIdea.Beep.Addin;
+using TheTechIdea.Beep.ConfigUtil;
 
 
 namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig

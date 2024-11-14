@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TheTechIdea.Beep.Container.Services;
+using TheTechIdea.Beep.Editor;
 namespace TheTechIdea.Beep.MVVM.ViewModels
 {
     public class NavigationBarViewModel : BaseViewModel

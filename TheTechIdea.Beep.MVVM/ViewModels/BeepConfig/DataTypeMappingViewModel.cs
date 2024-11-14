@@ -3,10 +3,11 @@
 using TheTechIdea.Beep.Container.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.Generic;
-using DataManagementModels.DriversConfigurations;
+using TheTechIdea.Beep.DriversConfigurations;
 using TheTechIdea.Beep.Editor;
-using DataManagementModels.Editor;
-using TheTechIdea.Util;
+using TheTechIdea.Beep.Addin;
+using TheTechIdea.Beep.ConfigUtil;
+using TheTechIdea.Beep.Utilities;
 using System.Linq;
 
 namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig

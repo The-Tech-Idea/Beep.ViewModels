@@ -1,10 +1,8 @@
 ﻿using TheTechIdea.Beep.Vis.Modules;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TheTechIdea.Beep.Container.Services;
+using TheTechIdea.Beep.Editor;
+using TheTechIdea.Beep.Addin;
+using TheTechIdea.Beep.ConfigUtil;
+
 
 
 namespace TheTechIdea.Beep.MVVM.ViewModels

@@ -2,12 +2,14 @@
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using TheTechIdea.Beep.Editor;
-using TheTechIdea.Util;
-using DataManagementModels.DriversConfigurations;
-using DataManagementModels.Editor;
+using TheTechIdea.Beep.Utilities;
+using TheTechIdea.Beep.DriversConfigurations;
+
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System;
+using TheTechIdea.Beep.Addin;
+using TheTechIdea.Beep.ConfigUtil;
 
 namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
 {

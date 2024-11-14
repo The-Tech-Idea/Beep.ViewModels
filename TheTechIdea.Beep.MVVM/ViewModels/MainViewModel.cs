@@ -2,8 +2,9 @@
 
 using TheTechIdea.Beep.Container.Services;
 using TheTechIdea.Beep.Vis.Modules;
-using DataManagementModels.Editor;
-using System.Collections.Generic;
+using TheTechIdea.Beep.Editor;
+using TheTechIdea.Beep.Addin;
+using TheTechIdea.Beep.ConfigUtil;
 
 
 namespace TheTechIdea.Beep.MVVM.ViewModels

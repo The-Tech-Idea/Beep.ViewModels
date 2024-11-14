@@ -1,6 +1,6 @@
 ﻿using TheTechIdea.Beep.Vis.Modules;
 using CommunityToolkit.Mvvm.ComponentModel;
-using DataManagementModels.Editor;
+using TheTechIdea.Beep.Editor;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,9 +9,12 @@ using System.Text;
 using System.Threading.Tasks;
 using TheTechIdea.Beep.DataBase;
 using TheTechIdea.Beep.DataView;
-using TheTechIdea.Beep.Editor;
+
+using TheTechIdea.Beep.Addin;
+using TheTechIdea.Beep.ConfigUtil;
+
 using TheTechIdea.Beep.Report;
-using TheTechIdea.Util;
+using TheTechIdea.Beep.Utilities;
 
 namespace TheTechIdea.Beep.MVVM.ViewModels
 {
