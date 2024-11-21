@@ -4,7 +4,7 @@
 	  <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <LangVersion>12.0</LangVersion>
-	  <Version>1.0.17</Version>
+	  <Version>1.0.18</Version>
 	  <Authors>The Tech Idea</Authors>
 	  <Description>MVVM  used to standarized GUI/UI for Beep Apps</Description>
 	  <PackageProjectUrl>https://github.com/The-Tech-Idea/BeepEnterprize.winform</PackageProjectUrl>
