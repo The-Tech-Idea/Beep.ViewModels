@@ -29,15 +29,13 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+    <PackageReference Include="TheTechIdea.Beep.Container" Version="1.0.0.73" />
+    <PackageReference Include="TheTechIdea.Beep.Container.Model" Version="1.0.0.39" />
     <PackageReference Include="TheTechIdea.Beep.DataManagementEngine" Version="2.0.4" />
     <PackageReference Include="TheTechIdea.Beep.DataManagementModels" Version="2.0.7" />
     <PackageReference Include="TheTechIdea.Beep.Vis.Modules" Version="1.0.128" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
-    <PackageReference Include="TheTechIdea.Beep.Container">
-      <Version>1.0.0.71</Version>
-    </PackageReference>
-  </ItemGroup>
+  
 	
 </Project>
