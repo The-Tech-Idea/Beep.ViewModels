@@ -11,10 +11,10 @@ using System.IO;
 using TheTechIdea.Beep.Addin;
 using TheTechIdea.Beep.ConfigUtil;
 using TheTechIdea.Beep.Vis;
-using TheTechIdea.Beep.Utilities;
 
 namespace TheTechIdea.Beep.MVVM.ViewModels
 {
+    
     [Addin(Caption = "Beep BaseViewModel", Name = "BaseViewModel", addinType = AddinType.Class)]
     public partial class ImportViewModel:BaseViewModel
     {
@@ -22,6 +22,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
         EntityStructure importedEntity;
         [ObservableProperty]
         IDataSource importedDataSource;
+       
         [ObservableProperty]
         string filename;
         [ObservableProperty]
@@ -42,8 +43,16 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
         List<AppFilter> appFilters;
         [ObservableProperty]
         List<object> data;
+        [ObservableProperty]
+        bool entityExistinDestination;
+
+        DataImportManager dataImportManager;
+
+        
+
         public ImportViewModel(IDMEEditor dMEEditor, IVisManager visManager) : base(dMEEditor, visManager)
         {
+            dataImportManager=new DataImportManager(dMEEditor);
 
         }
         public bool Init()
@@ -62,14 +71,34 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
                     CurrentEntity = CurrDataSource.GetEntityStructure(CurrentEntityName, true);
                     if (CurrentEntity != null)
                     {
+                        EntityExistinDestination=true;
+                        IsStopped = false;
+                        Editor.Logger.LogInfo($"Import: Found Imported Entity {CurrentEntity.EntityName}");
                         return true;
                     }
+                    else
+                    {
+                        EntityExistinDestination = false;
+                        IsStopped=false;
+                        Editor.Logger.LogInfo($"Import:  Imported Entity {CurrentEntity.EntityName} not found going to create it");
+                    }
+                }
+                else
+                {
+                    EntityExistinDestination = false;
+                    IsStopped =true;
+                    Editor.Logger.LogCritical($"Import:  DataSource {CurrentDataSourceName} could not be found or unable to connect to it");
+                    return false;
                 }
             }
             return false;
         }
         public bool ImportFile()
         {
+            if (IsStopped)
+            {
+                return false;
+            }
             if (string.IsNullOrEmpty(filename) || string.IsNullOrEmpty(Importpath) || (ImportDriverConfig == null))
             {
                 Editor.AddLogMessage("Beep", $"Imported filename and path missing", System.DateTime.Now, -1, "", Errors.Failed);
@@ -101,18 +130,26 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
                     ImportedEntity = ImportedDataSource.GetEntityStructure(ImportedEntityName, false);
                     if (ImportedEntity == null)
                     {
-                        CurrDataSource.CreateEntityAs(ImportedEntity);
+                        bool created=CurrDataSource.CreateEntityAs(ImportedEntity);
+                        if (created)
+                        {
+                            CurrentEntity = ImportedEntity;
+                        }
+                        else {
+                            CurrentEntity = CurrDataSource.GetEntityStructure(CurrentEntity, false);
+                        }
                     }
                     if (ImportedEntity != null)
                     {
                         // Import the Entity to the File
 
-                        if (Data != null)
-                        {
+                        //if (Data != null)
+                        //{
                             
-                            CurrDataSource.UpdateEntities(CurrentEntity.EntityName, Data, Waitprogress);
-                        }
-
+                        //    CurrDataSource.UpdateEntities(CurrentEntity.EntityName, Data, Waitprogress);
+                        //}
+                        dataImportManager.DestEntityStructure=CurrentEntity;
+                        dataImportManager.SourceEntityStructure=ImportedEntity;
                     }
                 }
             }
@@ -125,10 +162,13 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
         public void SetImportFileName(string filename)
         {
             Filename = filename;
+            ImportExtension = Path.GetExtension(Filename);
+            ImportDriverConfig =FileHelper.ExtensionExists(Editor, ImportExtension);  
         }
         public void SetImportExtension(string ext)
         {
             ImportExtension = ext;
+            ImportDriverConfig = FileHelper.ExtensionExists(Editor, ext);
         }
         public void SetImportDriverConfig(ConnectionDriversConfig driverConfig)
         {
