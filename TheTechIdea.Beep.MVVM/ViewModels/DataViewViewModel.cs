@@ -15,9 +15,11 @@ using TheTechIdea.Beep.ConfigUtil;
 
 using TheTechIdea.Beep.Report;
 using TheTechIdea.Beep.Utilities;
+using TheTechIdea.Beep.Vis;
 
 namespace TheTechIdea.Beep.MVVM.ViewModels
 {
+    [Addin(Caption = "Beep BaseViewModel", Name = "BaseViewModel", addinType = AddinType.Class)]
     public partial class DataViewViewModel:BaseViewModel
     {
         [ObservableProperty]

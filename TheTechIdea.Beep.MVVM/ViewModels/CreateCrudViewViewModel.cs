@@ -19,9 +19,12 @@ using System.ComponentModel;
 using System.Diagnostics;
 
 using System.Data;
+using TheTechIdea.Beep.Vis;
+using TheTechIdea.Beep.Utilities;
 
 namespace TheTechIdea.Beep.MVVM.ViewModels
 {
+    [Addin(Caption = "Beep BaseViewModel", Name = "BaseViewModel", addinType = AddinType.Class)]
     public partial class CreateCrudViewViewModel: BaseViewModel 
     {
         [ObservableProperty]

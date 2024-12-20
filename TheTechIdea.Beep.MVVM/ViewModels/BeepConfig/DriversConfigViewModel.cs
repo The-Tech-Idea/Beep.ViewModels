@@ -4,7 +4,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using TheTechIdea.Beep.Editor;
 using TheTechIdea.Beep.Utilities;
 using TheTechIdea.Beep.DriversConfigurations;
-
+using TheTechIdea.Beep.Vis;
+using TheTechIdea.Beep.Utilities;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System;

@@ -9,7 +9,8 @@ using TheTechIdea.Beep.Addin;
 using TheTechIdea.Beep.ConfigUtil;
 using TheTechIdea.Beep.Utilities;
 using System.Linq;
-
+using TheTechIdea.Beep.Vis;
+using TheTechIdea.Beep.Utilities;
 namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
 {
     public partial class DataTypeMappingViewModel : BaseViewModel

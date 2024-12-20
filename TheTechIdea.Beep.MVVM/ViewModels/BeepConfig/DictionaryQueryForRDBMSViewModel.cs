@@ -1,5 +1,6 @@
 ﻿using TheTechIdea.Beep.Vis.Modules;
-
+using TheTechIdea.Beep.Vis;
+using TheTechIdea.Beep.Utilities;
 using TheTechIdea.Beep.Editor;
 namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
 {

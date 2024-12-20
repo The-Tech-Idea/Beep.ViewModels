@@ -15,7 +15,8 @@ using TheTechIdea.Beep.Helpers;
 using TheTechIdea.Beep.InMemory;
 using TheTechIdea.Beep.Addin;
 using TheTechIdea.Beep.ConfigUtil;
-
+using TheTechIdea.Beep.Vis;
+using TheTechIdea.Beep.Utilities;
 
 namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
 {

@@ -9,12 +9,15 @@ using TheTechIdea.Beep.DataBase;
 using TheTechIdea.Beep.Editor;
 using TheTechIdea.Beep.Addin;
 using TheTechIdea.Beep.ConfigUtil;
+using TheTechIdea.Beep.Vis;
+using TheTechIdea.Beep.Utilities;
 
 
 
 namespace TheTechIdea.Beep.MVVM
 {
-    public partial class BaseViewModel : ObservableObject,IDisposable
+    [Addin(Caption = "Beep BaseViewModel", Name = "BaseViewModel", addinType = AddinType.Class)]
+    public partial class BaseViewModel : ObservableObject,IDisposable,IBeepViewModel
     {
         [ObservableProperty]
         bool isNew;
@@ -233,5 +236,68 @@ namespace TheTechIdea.Beep.MVVM
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+        #region "IBeepInterface"
+        public virtual string GetName()
+        {
+            return this.GetType().Name;
+        }
+
+        public virtual string GetDescription()
+        {
+            return string.Empty;
+        }
+
+        public virtual string GetVersion()
+        {
+            return string.Empty;
+        }
+
+        public virtual string GetAuthor()
+        {
+            return string.Empty;
+        }
+
+        public virtual string GetCompany()
+        {
+            return string.Empty;
+        }
+
+        public virtual bool ValidateViewModel()
+        {
+            return false;
+        }
+
+        public virtual bool InitializeViewModel()
+        {
+            return false;
+        }
+
+        public virtual bool LoadViewModel()
+        {
+            return false;
+        }
+
+        public virtual bool SaveViewModel()
+        {
+            return false;
+        }
+
+        public virtual bool CloseViewModel()
+        {
+            return false;
+        }
+
+        public virtual bool DisposeViewModel()
+        {
+            return false;
+        }
+
+        public virtual bool QueryViewModel(string[] parameters)
+        {
+            return false;
+        }
+        #endregion "IBeepInterface"
+
+
     }
 }

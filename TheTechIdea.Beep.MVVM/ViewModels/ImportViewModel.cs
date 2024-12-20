@@ -10,9 +10,12 @@ using TheTechIdea.Beep.Report;
 using System.IO;
 using TheTechIdea.Beep.Addin;
 using TheTechIdea.Beep.ConfigUtil;
+using TheTechIdea.Beep.Vis;
+using TheTechIdea.Beep.Utilities;
 
 namespace TheTechIdea.Beep.MVVM.ViewModels
 {
+    [Addin(Caption = "Beep BaseViewModel", Name = "BaseViewModel", addinType = AddinType.Class)]
     public partial class ImportViewModel:BaseViewModel
     {
         [ObservableProperty]
