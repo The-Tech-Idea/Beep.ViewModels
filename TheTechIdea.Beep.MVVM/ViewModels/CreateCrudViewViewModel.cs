@@ -52,7 +52,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
 
         // Using IList to hold a list of dynamically typed entities
         UnitOfWorkWrapper unitOfWork;
-        public CreateCrudViewViewModel(IDMEEditor Editor, IVisManager visManager) : base(Editor, visManager)
+        public CreateCrudViewViewModel(IDMEEditor Editor, IAppManager visManager) : base(Editor, visManager)
         {
 
         }

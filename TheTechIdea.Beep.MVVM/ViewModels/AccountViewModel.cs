@@ -12,7 +12,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
     [Addin(Caption = "Beep BaseViewModel", Name = "BaseViewModel", addinType = AddinType.Class)]
     public class AccountViewModel : BaseViewModel
     {
-        public AccountViewModel(IDMEEditor dMEEditor,IVisManager visManager) : base( dMEEditor, visManager)
+        public AccountViewModel(IDMEEditor dMEEditor,IAppManager visManager) : base( dMEEditor, visManager)
         {
         }
     }

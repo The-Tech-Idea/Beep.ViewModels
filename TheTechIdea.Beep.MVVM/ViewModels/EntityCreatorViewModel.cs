@@ -39,7 +39,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
         bool isNew = false;
         IDataSource SourceConnection;
         DataTable tb;
-        public EntityManagerViewModel(IDMEEditor pEditor, IVisManager visManager) : base(pEditor, visManager)
+        public EntityManagerViewModel(IDMEEditor pEditor, IAppManager visManager) : base(pEditor, visManager)
         {
             Editor = pEditor;
             VisManager = visManager;

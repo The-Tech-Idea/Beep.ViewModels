@@ -12,7 +12,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
     [Addin(Caption = "Beep BaseViewModel", Name = "BaseViewModel", addinType = AddinType.Class)]
     public class NavigationBarViewModel : BaseViewModel
     {
-        public NavigationBarViewModel(IDMEEditor dMEEditor,IVisManager visManager) : base( dMEEditor, visManager)
+        public NavigationBarViewModel(IDMEEditor dMEEditor,IAppManager visManager) : base( dMEEditor, visManager)
         {
         }
     }

@@ -57,7 +57,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
         string fromFilePath;
         [ObservableProperty]
         string fullPathandFileName;
-        public DataViewViewModel(IDMEEditor pEditor, IVisManager visManager) : base(pEditor, visManager)
+        public DataViewViewModel(IDMEEditor pEditor, IAppManager visManager) : base(pEditor, visManager)
         {
           
 

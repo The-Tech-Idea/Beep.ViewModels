@@ -9,7 +9,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
     [Addin(Caption = "Beep BaseViewModel", Name = "BaseViewModel", addinType = AddinType.Class)]
     public class MenuViewModel : BaseViewModel
     {
-        public MenuViewModel(IDMEEditor dMEEditor,IVisManager visManager) : base( dMEEditor, visManager)
+        public MenuViewModel(IDMEEditor dMEEditor,IAppManager visManager) : base( dMEEditor, visManager)
         {
         }
     }

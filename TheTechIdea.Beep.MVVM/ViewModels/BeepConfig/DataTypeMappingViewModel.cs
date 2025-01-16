@@ -10,7 +10,7 @@ using TheTechIdea.Beep.ConfigUtil;
 using TheTechIdea.Beep.Utilities;
 using System.Linq;
 using TheTechIdea.Beep.Vis;
-using TheTechIdea.Beep.Utilities;
+
 namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
 {
     public partial class DataTypeMappingViewModel : BaseViewModel
@@ -21,7 +21,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         string[] dataTypes;
 
         public UnitofWork<DatatypeMapping> DBWork { get; set; }
-        public DataTypeMappingViewModel(IDMEEditor dMEEditor,IVisManager visManager) : base( dMEEditor, visManager)
+        public DataTypeMappingViewModel(IDMEEditor dMEEditor,IAppManager visManager) : base( dMEEditor, visManager)
         {
             
             DBWork = new UnitofWork<DatatypeMapping>(dMEEditor, true, new ObservableBindingList<DatatypeMapping>(Editor.ConfigEditor.DataTypesMap), "GuidID");

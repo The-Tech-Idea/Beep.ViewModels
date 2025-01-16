@@ -39,7 +39,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
         AddinType toClassType;
         public ObservableBindingList<Function2FunctionAction> Function2FunctionActions => DBWork.Units;
 
-        public FunctionToFunctionMappingViewModel(IDMEEditor pEditor, IVisManager visManager) : base(pEditor, visManager)
+        public FunctionToFunctionMappingViewModel(IDMEEditor pEditor, IAppManager visManager) : base(pEditor, visManager)
         {
              Editor=pEditor;
             VisManager = visManager;

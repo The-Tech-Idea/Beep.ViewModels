@@ -50,7 +50,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
 
         
 
-        public ImportViewModel(IDMEEditor dMEEditor, IVisManager visManager) : base(dMEEditor, visManager)
+        public ImportViewModel(IDMEEditor dMEEditor, IAppManager visManager) : base(dMEEditor, visManager)
         {
             dataImportManager=new DataImportManager(dMEEditor);
 

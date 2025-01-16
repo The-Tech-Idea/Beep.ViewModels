@@ -8,7 +8,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
     [Addin(Caption = "Beep BaseViewModel", Name = "BaseViewModel", addinType = AddinType.Class)]
     public class TreeViewModel : BaseViewModel
     {
-        public TreeViewModel(IDMEEditor dMEEditor,IVisManager visManager) : base( dMEEditor, visManager)
+        public TreeViewModel(IDMEEditor dMEEditor,IAppManager visManager) : base( dMEEditor, visManager)
         {
         }
     }

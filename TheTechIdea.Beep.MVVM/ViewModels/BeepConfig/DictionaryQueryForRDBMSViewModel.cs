@@ -6,7 +6,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
 {
     public class DictionaryQueryForRDBMSViewModel : BaseViewModel
     {
-        public DictionaryQueryForRDBMSViewModel(IDMEEditor dMEEditor,IVisManager visManager) : base( dMEEditor, visManager)
+        public DictionaryQueryForRDBMSViewModel(IDMEEditor dMEEditor,IAppManager visManager) : base( dMEEditor, visManager)
         {
         }
     }

@@ -10,7 +10,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
     public class LogoutViewModel : BaseViewModel
     {
       
-        public LogoutViewModel(IDMEEditor dMEEditor,IVisManager visManager) : base( dMEEditor, visManager)
+        public LogoutViewModel(IDMEEditor dMEEditor,IAppManager visManager) : base( dMEEditor, visManager)
         {
         }
     }

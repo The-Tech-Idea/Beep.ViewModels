@@ -12,7 +12,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
     public class LoginViewModel : BaseViewModel
     {
        
-        public LoginViewModel(IDMEEditor dMEEditor,IVisManager visManager) : base( dMEEditor, visManager)
+        public LoginViewModel(IDMEEditor dMEEditor,IAppManager visManager) : base( dMEEditor, visManager)
         {
         }
     }

@@ -7,7 +7,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
 {
     public class DataSourcesViewModel : BaseViewModel
     {
-        public DataSourcesViewModel(IDMEEditor dMEEditor,IVisManager visManager) : base( dMEEditor, visManager)
+        public DataSourcesViewModel(IDMEEditor dMEEditor,IAppManager visManager) : base( dMEEditor, visManager)
         {
         }
     }

@@ -42,7 +42,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
         List<AppFilter> appFilters;
         [ObservableProperty]
         List<object> data;
-        public ExportViewModel(IDMEEditor dMEEditor, IVisManager visManager) : base(dMEEditor, visManager)
+        public ExportViewModel(IDMEEditor dMEEditor, IAppManager visManager) : base(dMEEditor, visManager)
         {
 
         }

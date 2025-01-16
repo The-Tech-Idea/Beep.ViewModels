@@ -16,7 +16,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
     
         
 
-        public MainViewModel(IDMEEditor dMEEditor,IVisManager visManager) : base( dMEEditor, visManager)
+        public MainViewModel(IDMEEditor dMEEditor,IAppManager visManager) : base( dMEEditor, visManager)
         {
 
         

@@ -13,7 +13,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
     [Addin(Caption = "Beep BaseViewModel", Name = "BaseViewModel", addinType = AddinType.Class)]
     public class ResetPasswordViewModel : BaseViewModel
     {
-        public ResetPasswordViewModel(IDMEEditor dMEEditor,IVisManager visManager) : base( dMEEditor, visManager)
+        public ResetPasswordViewModel(IDMEEditor dMEEditor,IAppManager visManager) : base( dMEEditor, visManager)
         {
         }
     }

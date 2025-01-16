@@ -120,13 +120,13 @@ namespace TheTechIdea.Beep.MVVM
         string currentEntityName;
         [ObservableProperty]
         string currentDataSourceName;
-        public IVisManager VisManager { get; set; }
+        public IAppManager VisManager { get; set; }
 
         public BaseViewModel()
         {
                 
         }
-        public BaseViewModel(IDMEEditor peditor, IVisManager visManager)
+        public BaseViewModel(IDMEEditor peditor, IAppManager visManager)
         {
           
             Editor = peditor;

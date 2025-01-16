@@ -27,7 +27,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         [ObservableProperty]
         List<string> listofImages;
 
-        public DriversConfigViewModel(IDMEEditor dMEEditor,IVisManager visManager) : base( dMEEditor, visManager)
+        public DriversConfigViewModel(IDMEEditor dMEEditor,IAppManager visManager) : base( dMEEditor, visManager)
         {
             DBWork = new UnitofWork<ConnectionDriversConfig>(dMEEditor, true, new ObservableBindingList<ConnectionDriversConfig>(Editor.ConfigEditor.DataDriversClasses), "GuidID");
             DBAssemblyClasses = Editor.ConfigEditor.DataSourcesClasses;
@@ -41,7 +41,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             {
                 DataSourceTypes.Add(item);
             }
-            listofImages = visManager.visHelper.GetImageNames();
+            
         }
 
         [RelayCommand]
