@@ -170,7 +170,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             Connection = new ConnectionProperties();
             if (DBWork != null)
             {
-                DBWork.Create(Connection);
+                DBWork.Add(Connection);
             }
         }
         [RelayCommand]
