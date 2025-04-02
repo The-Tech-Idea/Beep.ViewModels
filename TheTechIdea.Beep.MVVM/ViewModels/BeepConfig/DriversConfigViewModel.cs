@@ -28,6 +28,11 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         public ObservableBindingList<ConnectionDriversConfig> ConnectionDriversConfigs { get => DBWork.Units; }
         public DriversConfigViewModel(IDMEEditor dMEEditor,IAppManager visManager) : base( dMEEditor, visManager)
         {
+            var x=Editor.ConfigEditor.LoadConnectionDriversConfigValues();
+            if(x != null)
+            {
+                Editor.ConfigEditor.DataDriversClasses = x;
+            }
             DBWork = new UnitofWork<ConnectionDriversConfig>(dMEEditor, true, new ObservableBindingList<ConnectionDriversConfig>(Editor.ConfigEditor.DataDriversClasses), "GuidID");
             DBAssemblyClasses = Editor.ConfigEditor.DataSourcesClasses;
             DataSourceCategories = new List<object>();
