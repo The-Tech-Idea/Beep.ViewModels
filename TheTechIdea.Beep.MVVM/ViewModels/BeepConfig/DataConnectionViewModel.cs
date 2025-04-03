@@ -86,6 +86,11 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         public ObservableBindingList<ConnectionProperties> DataConnections => DBWork.Units;
         public DataConnectionViewModel(IDMEEditor dMEEditor, IAppManager visManager) : base(dMEEditor, visManager)
         {
+            var x = dMEEditor.ConfigEditor.LoadDataConnectionsValues();
+            if (x != null)
+            {
+                Editor.ConfigEditor.DataConnections = x;
+            }
             //  DBWork = new UnitofWork<ConnectionDriversConfig>(DMEEditor, true, new ObservableBindingList<ConnectionDriversConfig>(Editor.ConfigEditor.DataDriversClasses), "GuidID");
             dBWork = new UnitofWork<ConnectionProperties>(Editor, true, new ObservableBindingList<ConnectionProperties>(Editor.ConfigEditor.DataConnections), "GuidID");
           //  ConnectionProperties connection = new ConnectionProperties();
