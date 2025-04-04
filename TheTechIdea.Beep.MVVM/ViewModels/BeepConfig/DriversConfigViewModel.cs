@@ -1,5 +1,4 @@
 ﻿using TheTechIdea.Beep.Vis.Modules;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 using TheTechIdea.Beep.Editor;
 using TheTechIdea.Beep.Utilities;
@@ -7,7 +6,6 @@ using TheTechIdea.Beep.DriversConfigurations;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System;
-using TheTechIdea.Beep.Addin;
 using TheTechIdea.Beep.ConfigUtil;
 
 namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
@@ -29,7 +27,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         public DriversConfigViewModel(IDMEEditor dMEEditor,IAppManager visManager) : base( dMEEditor, visManager)
         {
             var x=Editor.ConfigEditor.LoadConnectionDriversConfigValues();
-            if(x != null)
+            if(x != null && x.Count>0)
             {
                 Editor.ConfigEditor.DataDriversClasses = x;
             }

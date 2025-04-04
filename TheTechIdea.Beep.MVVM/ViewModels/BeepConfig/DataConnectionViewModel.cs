@@ -87,7 +87,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         public DataConnectionViewModel(IDMEEditor dMEEditor, IAppManager visManager) : base(dMEEditor, visManager)
         {
             var x = dMEEditor.ConfigEditor.LoadDataConnectionsValues();
-            if (x != null)
+            if (x != null && x.Count>0)
             {
                 Editor.ConfigEditor.DataConnections = x;
             }
