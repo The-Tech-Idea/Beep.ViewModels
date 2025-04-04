@@ -141,9 +141,10 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                 //}
                 try
                 {
+                    Editor.ConfigEditor.DataConnections = DBWork.Units.ToList();
                     DBWork.Commit();
                     IsNew = false;
-                    Editor.ConfigEditor.DataConnections = DBWork.Units.ToList();
+              
                     Editor.ConfigEditor.SaveDataconnectionsValues();
                     IsSaved = true;
                 }
