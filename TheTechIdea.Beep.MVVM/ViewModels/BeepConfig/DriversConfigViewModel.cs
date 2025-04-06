@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System;
 using TheTechIdea.Beep.ConfigUtil;
+using System.Linq;
 
 namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
 {
@@ -27,9 +28,22 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         public DriversConfigViewModel(IDMEEditor dMEEditor,IAppManager visManager) : base( dMEEditor, visManager)
         {
             var x=Editor.ConfigEditor.LoadConnectionDriversConfigValues();
-            if(x != null && x.Count>0)
+            if (x.Count > 0)
             {
-                Editor.ConfigEditor.DataDriversClasses = x;
+                foreach (var item in x)
+                {
+                    if (item is ConnectionDriversConfig)
+                    {
+                        var driver = item;
+                        // check if the driver is already in the list
+                        if (Editor.ConfigEditor.DataDriversClasses.Where(x => x.DriverClass == driver.DriverClass).Count() == 0)
+                        {
+                            // add the driver to the list
+                            Editor.ConfigEditor.DataDriversClasses.Add(driver);
+                        }
+
+                    }
+                }
             }
             DBWork = new UnitofWork<ConnectionDriversConfig>(dMEEditor, true, new ObservableBindingList<ConnectionDriversConfig>(Editor.ConfigEditor.DataDriversClasses), "GuidID");
             DBAssemblyClasses = Editor.ConfigEditor.DataSourcesClasses;
