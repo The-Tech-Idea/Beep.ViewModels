@@ -87,9 +87,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         
      //       var x = Editor.ConfigEditor.LoadDataConnectionsValues();
            dBWork = new UnitofWork<ConnectionProperties>(Editor, true, new ObservableBindingList<ConnectionProperties>(Editor.ConfigEditor.DataConnections), "GuidID");
-         ////   dBWork.Units.Filter = "IsLocal = true";
-
-
+          DBWork.Get();
             Filters = new List<AppFilter>();
             DatasourcesCategorys = Enum.GetValues(typeof(DatasourceCategory));
             packageNames = new List<string>();
