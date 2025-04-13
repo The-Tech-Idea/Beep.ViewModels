@@ -13,6 +13,7 @@ using TheTechIdea.Beep.Addin;
 using TheTechIdea.Beep.ConfigUtil;
 using TheTechIdea.Beep.Vis;
 using TheTechIdea.Beep.Utilities;
+using System.Drawing;
 
 namespace TheTechIdea.Beep.MVVM.ViewModels
 {
@@ -20,24 +21,25 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
     public partial class EntityManagerViewModel : BaseViewModel
     {
         [ObservableProperty]
-        string entityName;
+        public string entityName;
         [ObservableProperty]
-        EntityStructure structure;
+        public EntityStructure structure;
         [ObservableProperty]
-        string datasourcename;
+        public string datasourcename;
         [ObservableProperty]
-        IEnumerable<DatatypeMapping> datatypeMappings;
+        public IEnumerable<DatatypeMapping> datatypeMappings;
         [ObservableProperty]
-        List<EntityField> oldfields;
-        
-        public ObservableBindingList<EntityField> newfields => DBWork.Units;
+        public List<EntityField> oldFields;
         [ObservableProperty]
-        UnitofWork<EntityField> dBWork;
+        public ObservableBindingList<EntityField> fields;
         [ObservableProperty]
-        bool isChanged=false;
+        public UnitofWork<EntityField> dBWork;
         [ObservableProperty]
-        bool isNew = false;
-        IDataSource SourceConnection;
+        public bool isChanged=false;
+        [ObservableProperty]
+        public bool isNew = false;
+        [ObservableProperty]
+        public IDataSource sourceConnection;
         DataTable tb;
         public EntityManagerViewModel(IDMEEditor pEditor, IAppManager visManager) : base(pEditor, visManager)
         {
@@ -54,7 +56,65 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
             field.EntityName = Structure.EntityName;
             
         }
-
+        [RelayCommand]
+        public void UpdateEntityName()
+        {
+            if (Structure != null && !string.IsNullOrEmpty(EntityName))
+            {
+                Structure.EntityName = EntityName;
+                IsChanged = true;
+            }
+        }
+        [RelayCommand]
+        public void UpdateDatasourceName()
+        {
+            if (Structure != null && !string.IsNullOrEmpty(Datasourcename))
+            {
+                Structure.DatasourceEntityName = Datasourcename;
+                IsChanged = true;
+            }
+        }
+        [RelayCommand]
+        public void UpdateFieldName(EntityField field)
+        {
+            if (Structure != null && field != null && !string.IsNullOrEmpty(field.fieldname))
+            {
+                field.EntityName = Structure.EntityName;
+                IsChanged = true;
+            }
+        }
+        [RelayCommand]
+        public void GetEntityStructure()
+        {
+            if (!string.IsNullOrEmpty(EntityName))
+            {
+                if(SourceConnection==null)
+                {
+                    SourceConnection = Editor.GetDataSource(Datasourcename);
+                }
+                if(SourceConnection == null)
+                {
+                    Editor.AddLogMessage("Beep", "Datasource not Found", DateTime.Now, 0, null, Errors.Failed);
+                    return;
+                }
+                if(SourceConnection.ConnectionStatus != ConnectionState.Open)
+                {
+                    Editor.AddLogMessage("Beep", "Datasource not Open", DateTime.Now, 0, null, Errors.Failed);
+                    return;
+                }
+                Structure = SourceConnection.GetEntityStructure(EntityName,true);
+                if (Structure != null)
+                {
+                    IsChanged = false;
+                    IsNew = false;
+               //     Fields= Structure.Fields;
+                    OldFields = Structure.Fields;
+                    DBWork = new UnitofWork<EntityField>(Editor, true, new ObservableBindingList<EntityField>(Structure.Fields), "GuidID");
+                    DBWork.PreInsert -= Unitofwork_PreInsert;
+                    DBWork.PreInsert += Unitofwork_PreInsert;
+                }
+            }
+        }
         [RelayCommand]
         public void UpdateFieldTypes()
         {
@@ -76,7 +136,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
                 Structure = entity;
                 IsChanged = false;
                 Structure = entity;
-                Oldfields = Structure.Fields;
+                OldFields = Structure.Fields;
                 DBWork = new UnitofWork<EntityField>(Editor, true, new ObservableBindingList<EntityField>(Structure.Fields), "GuidID");
             }
         }
@@ -95,7 +155,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
 
                 ApplyChanges();
                 DBWork.Commit(Logprogress,Token);
-                Oldfields = Structure.Fields;
+                OldFields = Structure.Fields;
               
             }
         }

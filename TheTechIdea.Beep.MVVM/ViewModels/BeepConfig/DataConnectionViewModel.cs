@@ -12,11 +12,9 @@ using TheTechIdea.Beep.DataBase;
 using TheTechIdea.Beep.Report;
 using TheTechIdea.Beep.Utilities;
 using TheTechIdea.Beep.Helpers;
-using TheTechIdea.Beep.InMemory;
-using TheTechIdea.Beep.Addin;
+
 using TheTechIdea.Beep.ConfigUtil;
-using TheTechIdea.Beep.Vis;
-using TheTechIdea.Beep.Utilities;
+
 
 namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
 {
@@ -87,27 +85,10 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         public DataConnectionViewModel(IDMEEditor dMEEditor, IAppManager visManager) : base(dMEEditor, visManager)
         {
         
-            var x = Editor.ConfigEditor.LoadDataConnectionsValues();
-            //if (x.Count > 0)
-            //{
-            //    foreach (var item in x)
-            //    {
-            //        if (item is ConnectionProperties)
-            //        {
-            //            var driver = item;
-            //            // check if the driver is already in the list
-            //            if (Editor.ConfigEditor.DataConnections.Where(x => x.ConnectionName == driver.ConnectionName).Count() == 0)
-            //            {
-            //                // add the driver to the list
-            //                Editor.ConfigEditor.DataConnections.Add(driver);
-            //            }
+     //       var x = Editor.ConfigEditor.LoadDataConnectionsValues();
+           dBWork = new UnitofWork<ConnectionProperties>(Editor, true, new ObservableBindingList<ConnectionProperties>(Editor.ConfigEditor.DataConnections), "GuidID");
+            dBWork.Units.Filter = "IsLocal = true";
 
-            //        }
-            //    }
-            //}
-            //  DBWork = new UnitofWork<ConnectionDriversConfig>(DMEEditor, true, new ObservableBindingList<ConnectionDriversConfig>(Editor.ConfigEditor.DataDriversClasses), "GuidID");
-            dBWork = new UnitofWork<ConnectionProperties>(Editor, true, new ObservableBindingList<ConnectionProperties>(Editor.ConfigEditor.DataConnections), "GuidID");
-          //  ConnectionProperties connection = new ConnectionProperties();
 
             Filters = new List<AppFilter>();
             DatasourcesCategorys = Enum.GetValues(typeof(DatasourceCategory));
