@@ -79,26 +79,37 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         string userId;
         [ObservableProperty]
         string installFolderPath;
-        
-      
+
+        [ObservableProperty]
+        List<AssemblyClassDefinition> installedDataSources;
         public ObservableBindingList<ConnectionProperties> DataConnections => DBWork.Units;
         public DataConnectionViewModel(IDMEEditor dMEEditor, IAppManager visManager) : base(dMEEditor, visManager)
         {
         
      //       var x = Editor.ConfigEditor.LoadDataConnectionsValues();
            dBWork = new UnitofWork<ConnectionProperties>(Editor, true, new ObservableBindingList<ConnectionProperties>(Editor.ConfigEditor.DataConnections), "GuidID");
-          DBWork.Get();
+            DBWork.Get();
             Filters = new List<AppFilter>();
             DatasourcesCategorys = Enum.GetValues(typeof(DatasourceCategory));
             packageNames = new List<string>();
             packageVersions = new List<string>();
             embeddedDatabaseTypes = new List<ConnectionDriversConfig>();
+            GetInstallDataSources();
             foreach (var item in Editor.ConfigEditor.DataDriversClasses)
             {
 
                 if (!string.IsNullOrEmpty(item.PackageName))
                 {
-                    packageNames.Add(item.PackageName);
+                    //check if its in installeddataources
+                    if (installedDataSources != null)
+                    {
+                        var ds = installedDataSources.Where(x => x.className == item.classHandler).FirstOrDefault();
+                        if (ds != null)
+                        {
+                            packageNames.Add(item.PackageName);
+                        }
+                    }
+                    
                 }
             }
             foreach (var item in Editor.ConfigEditor.DataDriversClasses)
@@ -110,11 +121,35 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             }
             foreach (ConnectionDriversConfig cls in Editor.ConfigEditor.DataDriversClasses.Where(x => x.CreateLocal == true))
             {
-                embeddedDatabaseTypes.Add(cls);
+                //check if its in installeddataources
+                var ds = installedDataSources.Where(x => x.className == cls.classHandler).FirstOrDefault();
+                if (ds != null)
+                {
+                    embeddedDatabaseTypes.Add(cls);
+                }
+
+
+              
             }
             GetInMemoryDriverConfigs();
-            
+          //  GetInstallDataSources();
         }
+
+        private void GetInstallDataSources()
+        {
+            installedDataSources = new List<AssemblyClassDefinition>();
+            if (Editor.ConfigEditor.DataSourcesClasses != null)
+            {
+                foreach (var item in Editor.ConfigEditor.DataSourcesClasses)
+                {
+                    if (!string.IsNullOrEmpty(item.className))
+                    {
+                        installedDataSources.Add(item);
+                    }
+                }
+            }
+        }
+
         [RelayCommand]
         public void Save()
         {
@@ -287,7 +322,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                             Connection.ID = Editor.ConfigEditor.DataConnections.Max(y => y.ID) + 1;
                         }
 
-                        Connection.FilePath = ".\\" + SelectedFolder.FolderPath;
+                        Connection.FilePath = InstallFolderPath;
                         Connection.FileName = DatabaseName;
                         Connection.IsLocal = true;
 
