@@ -1,43 +1,43 @@
 ﻿using TheTechIdea.Beep.Vis.Modules;
 using CommunityToolkit.Mvvm.ComponentModel;
 using TheTechIdea.Beep.Editor;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-
-using TheTechIdea.Beep.Addin;
 using TheTechIdea.Beep.ConfigUtil;
-
 using TheTechIdea.Beep.Utilities;
 using TheTechIdea.Beep.Vis;
-using TheTechIdea.Beep.Utilities;
+using CommunityToolkit.Mvvm.Input;
+
+
 namespace TheTechIdea.Beep.MVVM.ViewModels
 {
     [Addin(Caption = "Beep BaseViewModel", Name = "BaseViewModel", addinType = AddinType.Class)]
     public partial class FunctionToFunctionMappingViewModel : BaseViewModel
     {
         [ObservableProperty]
-        List<string> fromEvents;
+        public List<string> fromEvents;
         [ObservableProperty]
-        List<string> toEvents;
+        public List<string> toEvents;
         [ObservableProperty]    
-        List<string> fromFunctions;
+        public List<string> fromFunctions;
         [ObservableProperty]
-        List<string> toFunctions;
+        public List<string> toFunctions;
         [ObservableProperty]
-        List<string> fromClasses;
+        public List<string> fromClasses;
         [ObservableProperty]
-        List<string> toClasses;
+        public List<string> toClasses;
+        [ObservableProperty]
+        public UnitofWork<Function2FunctionAction> dBWork;
        
-        UnitofWork<Function2FunctionAction> DBWork;
+        public ObservableBindingList<Function2FunctionAction> Units { get { return DBWork.Units; } }
         [ObservableProperty]
-        List<string> actiontypes;
+        public List<string> actiontypes;
         [ObservableProperty]
-        AddinType fromClassType;
+        public AddinType fromClassType;
         [ObservableProperty]
-        AddinType toClassType;
-        public ObservableBindingList<Function2FunctionAction> Function2FunctionActions => DBWork.Units;
+        public AddinType toClassType;
+     
 
         public FunctionToFunctionMappingViewModel(IDMEEditor pEditor, IAppManager visManager) : base(pEditor, visManager)
         {
@@ -58,11 +58,13 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
             actiontypes.Add("Event");
             actiontypes.Add("Function");
         }
+        [RelayCommand]
         public void LoadData()
         {
             DBWork.Units= new ObservableBindingList<Function2FunctionAction>(Editor.ConfigEditor.Function2Functions);
 
         }
+        [RelayCommand]
         public void SaveData()
         {
             Editor.ConfigEditor.Function2Functions = DBWork.Units.ToList();
@@ -70,8 +72,9 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
         }
         private void Unitofwork_PreInsert(object sender, UnitofWorkParams e)
         {
-            throw new NotImplementedException();
+            
         }
+        [RelayCommand]
         public void GetFromFunctions(string fromclass)
         {
             FromFunctions.Clear();
@@ -80,6 +83,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
                 FromFunctions.Add(item.Caption);
             }
         }
+        [RelayCommand]
         public void GetToFunctions(string toclass)
         {
             ToFunctions.Clear();
