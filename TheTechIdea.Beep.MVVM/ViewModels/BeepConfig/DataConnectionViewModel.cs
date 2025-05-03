@@ -79,6 +79,8 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         string userId;
         [ObservableProperty]
         string installFolderPath;
+        [ObservableProperty]
+        string extension;
 
         [ObservableProperty]
         List<AssemblyClassDefinition> installedDataSources;
@@ -323,7 +325,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                         }
 
                         Connection.FilePath = InstallFolderPath;
-                        Connection.FileName = DatabaseName;
+                        Connection.FileName = DatabaseName+"."+ extension;
                         Connection.IsLocal = true;
 
                         Connection.ConnectionString = SelectedEmbeddedDatabaseType.ConnectionString; //Path.Combine(Connection.FilePath, Connection.FileName);
