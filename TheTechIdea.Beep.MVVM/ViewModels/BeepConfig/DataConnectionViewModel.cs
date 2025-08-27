@@ -262,7 +262,8 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                 }
                 else
                 {
-                    Filters = new List<AppFilter>() { new AppFilter() { FieldName = "Category", FilterValue = selectedCategoryTextValue.ToUpper().ToString(), Operator = "=" } };
+                    var categoryEnum = (DatasourceCategory)Enum.Parse(typeof(DatasourceCategory), SelectedCategoryTextValue.ToUpper());
+                    Filters = new List<AppFilter>() { new AppFilter() { FieldName = "Category", FieldType = typeof(DatasourceCategory), FilterValue = categoryEnum, Operator = "=" } };
                     DBWork.Get(Filters);
 
 
