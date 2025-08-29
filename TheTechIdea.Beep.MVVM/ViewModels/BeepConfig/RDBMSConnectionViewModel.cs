@@ -174,8 +174,8 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             SelectedCategoryTextValue = DatasourceCategory.RDBMS.ToString();
 
             // Filter for RDBMS category excluding Oracle
-            Filters.Add(new AppFilter { FieldName = "Category", FieldType = typeof(DatasourceCategory), FilterValue = DatasourceCategory.RDBMS, Operator = "=" });
-            Filters.Add(new AppFilter { FieldName = "DatasourceType", FieldType = typeof(DataSourceType), FilterValue = DataSourceType.Oracle, Operator = "!=" });
+            Filters.Add(new AppFilter { FieldName = "Category", FieldType = typeof(DatasourceCategory), FilterValue = Enum.GetName(DatasourceCategory.RDBMS), Operator = "=" });
+            Filters.Add(new AppFilter { FieldName = "DatasourceType", FieldType = typeof(DataSourceType), FilterValue = Enum.GetName(DataSourceType.Oracle), Operator = "!=" });
             DBWork.Get(Filters);
 
             MinPoolSize = 1;

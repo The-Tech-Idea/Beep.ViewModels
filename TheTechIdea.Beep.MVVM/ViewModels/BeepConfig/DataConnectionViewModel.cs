@@ -87,9 +87,9 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         public ObservableBindingList<ConnectionProperties> DataConnections => DBWork.Units;
         public DataConnectionViewModel(IDMEEditor dMEEditor, IAppManager visManager) : base(dMEEditor, visManager)
         {
-        
-     //       var x = Editor.ConfigEditor.LoadDataConnectionsValues();
-           dBWork = new UnitofWork<ConnectionProperties>(Editor, true, new ObservableBindingList<ConnectionProperties>(Editor.ConfigEditor.DataConnections), "GuidID");
+
+            //       var x = Editor.ConfigEditor.LoadDataConnectionsValues();
+            dBWork = new UnitofWork<ConnectionProperties>(Editor, true, new ObservableBindingList<ConnectionProperties>(Editor.ConfigEditor.DataConnections), "GuidID");
             DBWork.Get();
             Filters = new List<AppFilter>();
             DatasourcesCategorys = Enum.GetValues(typeof(DatasourceCategory));
@@ -111,7 +111,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                             packageNames.Add(item.PackageName);
                         }
                     }
-                    
+
                 }
             }
             foreach (var item in Editor.ConfigEditor.DataDriversClasses)
@@ -131,10 +131,10 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                 }
 
 
-              
+
             }
             GetInMemoryDriverConfigs();
-          //  GetInstallDataSources();
+            //  GetInstallDataSources();
         }
 
         private void GetInstallDataSources()
@@ -174,7 +174,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                     Editor.ConfigEditor.DataConnections = DBWork.Units.ToList();
                     DBWork.Commit();
                     IsNew = false;
-              
+
                     Editor.ConfigEditor.SaveDataconnectionsValues();
                     IsSaved = true;
                 }
@@ -183,7 +183,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                     IsSaved = false;
                     Editor.AddLogMessage("Beep", $"Error Saving Connection - {ex.Message}", DateTime.Now, -1, null, Errors.Failed);
                 }
-                
+
 
             }
         }
@@ -262,8 +262,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                 }
                 else
                 {
-                    var categoryEnum = (DatasourceCategory)Enum.Parse(typeof(DatasourceCategory), SelectedCategoryTextValue.ToUpper());
-                    Filters = new List<AppFilter>() { new AppFilter() { FieldName = "Category", FieldType = typeof(DatasourceCategory), FilterValue = categoryEnum, Operator = "=" } };
+                    Filters = new List<AppFilter>() { new AppFilter() { FieldName = "Category", FilterValue = selectedCategoryTextValue.ToUpper().ToString(), Operator = "=" } };
                     DBWork.Get(Filters);
 
 
@@ -326,7 +325,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                         }
 
                         Connection.FilePath = InstallFolderPath;
-                        Connection.FileName = DatabaseName+"."+ extension;
+                        Connection.FileName = DatabaseName + "." + extension;
                         Connection.IsLocal = true;
 
                         Connection.ConnectionString = SelectedEmbeddedDatabaseType.ConnectionString; //Path.Combine(Connection.FilePath, Connection.FileName);
@@ -336,7 +335,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                         }
                         Connection.UserID = "";
                         Connection.Password = Password;
-                      //  DBWork.Create(Connection);
+                        //  DBWork.Create(Connection);
                         Save();
                         //-----------------------------------------------------
                         IDataSource ds = Editor.CreateLocalDataSourceConnection(Connection, DatabaseName, SelectedEmbeddedDatabaseType.classHandler);
@@ -358,7 +357,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                                 Editor.AddLogMessage("Beep", $"Could not Create Local/Embedded Database", DateTime.Now, -1, null, Errors.Failed);
                             }
                         }
-                        
+
                         //-----------------------------------------------------
                     }
                     else
@@ -402,7 +401,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                     IsSaved = false;
                     IsNew = true;
                     IsCreated = false;
-                     Add();
+                    Add();
                     if (SelectedEmbeddedDatabaseType != null)
                     {
                         Connection.Category = SelectedEmbeddedDatabaseType.DatasourceCategory;//(DatasourceCategory)(int) Enum.Parse(typeof( DatasourceCategory),CategorycomboBox.Text);
@@ -430,7 +429,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                         }
                         Connection.UserID = "";
                         Connection.Password = Password;
-              //          DBWork.Create(Connection);
+                        //          DBWork.Create(Connection);
                         Save();
                         //-----------------------------------------------------
                         Save();
@@ -454,7 +453,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                                 Editor.AddLogMessage("Beep", $"Could not Create Local/Embedded Database", DateTime.Now, -1, null, Errors.Failed);
                             }
                         }
-                   
+
                         else
                         {
                             Editor.AddLogMessage("Beep", $"Could not Create Local/Embedded Database", DateTime.Now, -1, null, Errors.Failed);
@@ -545,19 +544,19 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
 
             }
         }
-      
-        public  List<AssemblyClassDefinition> GetInMemoryDBs()
+
+        public List<AssemblyClassDefinition> GetInMemoryDBs()
         {
             return Editor.ConfigEditor.DataSourcesClasses.Where(p => p.classProperties != null && p.InMemory == true).ToList();
         }
-        public  void GetDriverConfiguration(string pclassname)
+        public void GetDriverConfiguration(string pclassname)
         {
             try
             {
-               // AssemblyClassDefinition assembly = GetInMemoryDBs().Where(p => p.className == pclassname).FirstOrDefault();
+                // AssemblyClassDefinition assembly = GetInMemoryDBs().Where(p => p.className == pclassname).FirstOrDefault();
                 ConnectionDriversConfig package = Editor.ConfigEditor.DataDriversClasses.Where(x => x.classHandler == pclassname).OrderByDescending(o => o.version).FirstOrDefault();
                 SelectedinMemoryDatabaseType = package;
-                
+
             }
             catch (Exception ex)
             {
@@ -570,15 +569,15 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             try
             {
                 List<string> ls = GetInMemoryDBs().Select(p => p.className).ToList();
-                InMemoryDatabaseTypes = Editor.ConfigEditor.DataDriversClasses.Where(x => ls.Contains(x.classHandler) ).OrderByDescending(o => o.version).ToList();
-           }
+                InMemoryDatabaseTypes = Editor.ConfigEditor.DataDriversClasses.Where(x => ls.Contains(x.classHandler)).OrderByDescending(o => o.version).ToList();
+            }
             catch (Exception ex)
             {
                 InMemoryDatabaseTypes = null;
                 Editor.AddLogMessage("Beep", $"Could not Create Drivers Config {ex.Message}", DateTime.Now, -1, "", Errors.Failed);
-                
+
             }
         }
-       
+
     }
 }

@@ -165,7 +165,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             SelectedCategoryTextValue = DatasourceCategory.INMEMORY.ToString();
 
             // Filter for INMEMORY category
-            Filters.Add(new AppFilter { FieldName = "Category", FieldType = typeof(DatasourceCategory), FilterValue = DatasourceCategory.INMEMORY, Operator = "=" });
+            Filters.Add(new AppFilter { FieldName = "Category", FieldType = typeof(DatasourceCategory), FilterValue = Enum.GetName(DatasourceCategory.INMEMORY), Operator = "=" });
             DBWork.Get(Filters);
 
             Port = GetDefaultPort(SelectedDataSourceType);

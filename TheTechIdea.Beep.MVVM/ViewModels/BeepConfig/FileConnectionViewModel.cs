@@ -129,7 +129,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             }
 
             // Set default filter for FILE category using AppFilter
-            Filters.Add(new AppFilter { FieldName = "Category", FieldType = typeof(DatasourceCategory), FilterValue = DatasourceCategory.FILE, Operator = "=" });
+            Filters.Add(new AppFilter { FieldName = "Category", FieldType = typeof(DatasourceCategory), FilterValue = Enum.GetName(DatasourceCategory.FILE), Operator = "=" });
             DBWork.Get(Filters);
         }
 
@@ -243,7 +243,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             {
                 DBWork.Get();
                 Filters.Clear();
-                Filters.Add(new AppFilter { FieldName = "Category", FieldType = typeof(DatasourceCategory), FilterValue = DatasourceCategory.FILE, Operator = "=" });
+                Filters.Add(new AppFilter { FieldName = "Category", FieldType = typeof(DatasourceCategory), FilterValue = Enum.GetName(DatasourceCategory.FILE), Operator = "=" });
                 DBWork.Get(Filters);
             }
         }

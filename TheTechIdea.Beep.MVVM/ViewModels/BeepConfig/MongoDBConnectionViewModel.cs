@@ -171,7 +171,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             SelectedCategoryValue = (int)DatasourceCategory.NOSQL;
             SelectedCategoryTextValue = DatasourceCategory.NOSQL.ToString();
 
-            Filters.Add(new AppFilter { FieldName = "DatasourceType", FieldType = typeof(DataSourceType), FilterValue = DataSourceType.MongoDB, Operator = "=" });
+            Filters.Add(new AppFilter { FieldName = "DatasourceType", FieldType = typeof(DataSourceType), FilterValue = Enum.GetName(DataSourceType.MongoDB), Operator = "=" });
             DBWork.Get(Filters);
 
             Port = 27017;

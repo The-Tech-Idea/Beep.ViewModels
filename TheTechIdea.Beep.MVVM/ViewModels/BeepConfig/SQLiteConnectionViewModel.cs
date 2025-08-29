@@ -169,7 +169,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             SelectedCategoryValue = (int)DatasourceCategory.FILE;
             SelectedCategoryTextValue = DatasourceCategory.FILE.ToString();
 
-            Filters.Add(new AppFilter { FieldName = "DatasourceType", FieldType = typeof(DataSourceType), FilterValue = DataSourceType.SqlLite, Operator = "=" });
+            Filters.Add(new AppFilter { FieldName = "DatasourceType", FieldType = typeof(DataSourceType), FilterValue = Enum.GetName(DataSourceType.SqlLite), Operator = "=" });
             DBWork.Get(Filters);
 
             UseUri = false;

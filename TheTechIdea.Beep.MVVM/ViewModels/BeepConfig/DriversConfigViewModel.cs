@@ -23,11 +23,11 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         List<object> dataSourceTypes;
         [ObservableProperty]
         List<string> listofImages;
-   
+
         public ObservableBindingList<ConnectionDriversConfig> ConnectionDriversConfigs { get => DBWork.Units; }
-        public DriversConfigViewModel(IDMEEditor dMEEditor,IAppManager visManager) : base( dMEEditor, visManager)
+        public DriversConfigViewModel(IDMEEditor dMEEditor, IAppManager visManager) : base(dMEEditor, visManager)
         {
-            var x=Editor.ConfigEditor.LoadConnectionDriversConfigValues();
+            var x = Editor.ConfigEditor.LoadConnectionDriversConfigValues();
             if (x.Count > 0)
             {
                 foreach (var item in x)
@@ -57,7 +57,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             {
                 DataSourceTypes.Add(item);
             }
-       
+
         }
 
         [RelayCommand]
@@ -66,7 +66,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             Editor.ConfigEditor.SaveConnectionDriversConfigValues();
             if (DBWork != null)
             {
-               
+
                 DBWork.Commit(Logprogress, Token);
             }
         }
