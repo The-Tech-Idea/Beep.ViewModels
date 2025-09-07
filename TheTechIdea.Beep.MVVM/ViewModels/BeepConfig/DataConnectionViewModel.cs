@@ -307,6 +307,14 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                     IsSaved = false;
                     IsNew = true;
                     IsCreated = false;
+                    if(string.IsNullOrEmpty(extension))
+                    {
+                        extension = "db";
+                    }
+                    if(string.IsNullOrEmpty(installFolderPath))
+                    {
+                        InstallFolderPath = Editor.ConfigEditor.ExePath;
+                    }
                     Add();
                     if (SelectedEmbeddedDatabaseType != null)
                     {
