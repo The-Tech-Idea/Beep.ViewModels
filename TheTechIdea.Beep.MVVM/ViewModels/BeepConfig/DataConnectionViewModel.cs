@@ -587,5 +587,42 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             }
         }
 
+        public void GetConnection(string connid)
+        {
+            if (DBWork == null)
+            {
+                DBWork = new UnitofWork<ConnectionProperties>(Editor, true, new ObservableBindingList<ConnectionProperties>(Editor.ConfigEditor.DataConnections), "GuidID");
+            }
+            if (!string.IsNullOrEmpty(connid))
+            {
+                DBWork.Get(new List<AppFilter>() { new AppFilter() { FieldName = "GuidID", FilterValue = $"{connid}", Operator = "=" } });
+            }
+            if (DBWork.Units.Count > 0)
+            {
+                Connection = DBWork.Units[0];
+            }
+
+        }
+
+        public void GetConnectionByName(string dsname, DataSourceType sourceType, DatasourceCategory category)
+        {
+            if (DBWork == null)
+            {
+                DBWork = new UnitofWork<ConnectionProperties>(Editor, true, new ObservableBindingList<ConnectionProperties>(Editor.ConfigEditor.DataConnections), "GuidID");
+            }
+            if (!string.IsNullOrEmpty(dsname))
+            {
+                DBWork.Get(new List<AppFilter>() {
+                    new AppFilter() { FieldName = "ConnectionName", FilterValue = $"{dsname}", Operator = "=" },
+                    new AppFilter() { FieldName = "DatabaseType", FilterValue = $"{(int)sourceType}", Operator = "=" },
+                    new AppFilter() { FieldName = "Category", FilterValue = $"{category.ToString().ToUpper()}", Operator = "=" }
+                });
+            }
+            if (DBWork.Units.Count > 0)
+            {
+                Connection = DBWork.Units[0];
+            }
+
+        }
     }
 }
