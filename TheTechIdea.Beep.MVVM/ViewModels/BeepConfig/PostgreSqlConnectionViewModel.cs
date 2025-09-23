@@ -16,70 +16,13 @@ using System.Data;
 
 namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
 {
-    public partial class PostgreSqlConnectionViewModel : BaseViewModel
+    public partial class PostgreSqlConnectionViewModel : DataConnectionViewModel
     {
-        [ObservableProperty]
-        UnitofWork<ConnectionProperties> dBWork;
-
-        [ObservableProperty]
-        ConnectionProperties connection;
-
-        [ObservableProperty]
-        List<AppFilter> filters;
-
-        [ObservableProperty]
-        string selectedCategoryTextValue;
-
-        [ObservableProperty]
-        int selectedCategoryValue;
-
-        [ObservableProperty]
-        DatasourceCategory selectedCategoryItem;
-
-        [ObservableProperty]
-        Array datasourcesCategorys;
-
-        [ObservableProperty]
-        int selectedconnectionidx;
-
-        [ObservableProperty]
-        string selectedconnectionGuid;
-
-        [ObservableProperty]
-        List<string> packageNames;
-
-        [ObservableProperty]
-        List<string> packageVersions;
-
-        [ObservableProperty]
-        string selectedpackage;
-
-        [ObservableProperty]
-        string selectedversion;
-
-        [ObservableProperty]
-        public List<EntityField> fields;
-
         [ObservableProperty]
         List<ConnectionDriversConfig> postgreSqlDatabaseTypes;
 
         [ObservableProperty]
         ConnectionDriversConfig selectedPostgreSqlDatabaseType;
-
-        [ObservableProperty]
-        string currentDataSourceName;
-
-        [ObservableProperty]
-        string databaseName;
-
-        [ObservableProperty]
-        string password;
-
-        [ObservableProperty]
-        string connectionString;
-
-        [ObservableProperty]
-        string userId;
 
         [ObservableProperty]
         string host;
@@ -129,16 +72,8 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         [ObservableProperty]
         List<ConnectionDriversConfig> installedDataSources;
 
-        public ObservableBindingList<ConnectionProperties> DataConnections => DBWork.Units;
-
         public PostgreSqlConnectionViewModel(IDMEEditor dMEEditor, IAppManager visManager) : base(dMEEditor, visManager)
         {
-            DBWork = new UnitofWork<ConnectionProperties>(Editor, true, new ObservableBindingList<ConnectionProperties>(Editor.ConfigEditor.DataConnections), "GuidID");
-            DBWork.Get();
-            Filters = new List<AppFilter>();
-            DatasourcesCategorys = Enum.GetValues(typeof(DatasourceCategory));
-            packageNames = new List<string>();
-            packageVersions = new List<string>();
             postgreSqlDatabaseTypes = new List<ConnectionDriversConfig>();
             GetInstallDataSources();
 
@@ -154,8 +89,8 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             {
                 if (!string.IsNullOrEmpty(item.PackageName))
                 {
-                    packageNames.Add(item.PackageName);
-                    packageVersions.Add(item.version);
+                    PackageNames.Add(item.PackageName);
+                    PackageVersions.Add(item.version);
                 }
             }
 

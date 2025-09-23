@@ -47,9 +47,9 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         [ObservableProperty]
         public List<EntityField> fields;
         [ObservableProperty]
-        List<ConnectionDriversConfig> embeddedDatabaseTypes;
-        [ObservableProperty]
         ConnectionDriversConfig selectedEmbeddedDatabaseType;
+        [ObservableProperty]
+        List<ConnectionDriversConfig> embeddedDatabaseTypes;
         [ObservableProperty]
         List<ConnectionDriversConfig> inMemoryDatabaseTypes;
         [ObservableProperty]
@@ -89,17 +89,17 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         #region Constructor
         public DataConnectionViewModel(IDMEEditor dMEEditor, IAppManager visManager) : base(dMEEditor, visManager)
         {
-            InitializeViewModel();
+            InitializeDataConnectionViewModel();
         }
         #endregion
 
         #region Initialization
-        private void InitializeViewModel()
+        private void InitializeDataConnectionViewModel()
         {
             try
             {
                 // Initialize DBWork
-                dBWork = new UnitofWork<ConnectionProperties>(Editor, true, 
+                DBWork = new UnitofWork<ConnectionProperties>(Editor, true, 
                     new ObservableBindingList<ConnectionProperties>(Editor.ConfigEditor.DataConnections), "GuidID");
                 DBWork.Get();
 
@@ -121,38 +121,38 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         {
             Filters = new List<AppFilter>();
             DatasourcesCategorys = Enum.GetValues(typeof(DatasourceCategory));
-            packageNames = new List<string>();
-            packageVersions = new List<string>();
-            embeddedDatabaseTypes = new List<ConnectionDriversConfig>();
-            installedDataSources = new List<AssemblyClassDefinition>();
+            PackageNames = new List<string>();
+            PackageVersions = new List<string>();
+            EmbeddedDatabaseTypes = new List<ConnectionDriversConfig>();
+            InstalledDataSources = new List<AssemblyClassDefinition>();
         }
 
         private void PopulatePackageInformation()
         {
-            var installedDataSourceClasses = installedDataSources?.Select(x => x.className).ToHashSet() ?? new HashSet<string>();
+            var installedDataSourceClasses = InstalledDataSources?.Select(x => x.className).ToHashSet() ?? new HashSet<string>();
 
             foreach (var item in Editor.ConfigEditor.DataDriversClasses)
             {
                 if (!string.IsNullOrEmpty(item.PackageName) && installedDataSourceClasses.Contains(item.classHandler))
                 {
-                    if (!packageNames.Contains(item.PackageName))
-                        packageNames.Add(item.PackageName);
+                    if (!PackageNames.Contains(item.PackageName))
+                        PackageNames.Add(item.PackageName);
                     
-                    if (!packageVersions.Contains(item.version))
-                        packageVersions.Add(item.version);
+                    if (!PackageVersions.Contains(item.version))
+                        PackageVersions.Add(item.version);
                 }
             }
         }
 
         private void PopulateEmbeddedDatabaseTypes()
         {
-            var installedDataSourceClasses = installedDataSources?.Select(x => x.className).ToHashSet() ?? new HashSet<string>();
+            var installedDataSourceClasses = InstalledDataSources?.Select(x => x.className).ToHashSet() ?? new HashSet<string>();
 
             foreach (var cls in Editor.ConfigEditor.DataDriversClasses.Where(x => x.CreateLocal == true))
             {
                 if (installedDataSourceClasses.Contains(cls.classHandler))
                 {
-                    embeddedDatabaseTypes.Add(cls);
+                    EmbeddedDatabaseTypes.Add(cls);
                 }
             }
         }
@@ -261,7 +261,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                     new AppFilter() 
                     { 
                         FieldName = "Category", 
-                        FilterValue = selectedCategoryTextValue.ToUpper(), 
+                        FilterValue = SelectedCategoryTextValue.ToUpper(), 
                         Operator = "=" 
                     } 
                 };

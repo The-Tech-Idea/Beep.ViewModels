@@ -143,7 +143,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             DBWork.Get();
             Filters = new List<AppFilter>();
             DatasourcesCategorys = Enum.GetValues(typeof(DatasourceCategory));
-            packageNames = new List<string>();
+            PackageNames = new List<string>();
             packageVersions = new List<string>();
             redisDatabaseTypes = new List<ConnectionDriversConfig>();
             GetInstallDataSources();
@@ -160,7 +160,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             {
                 if (!string.IsNullOrEmpty(item.PackageName))
                 {
-                    packageNames.Add(item.PackageName);
+                    PackageNames.Add(item.PackageName);
                     packageVersions.Add(item.version);
                 }
             }

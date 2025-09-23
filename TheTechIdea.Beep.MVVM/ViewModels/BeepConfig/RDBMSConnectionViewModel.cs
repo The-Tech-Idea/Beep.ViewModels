@@ -132,7 +132,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             Filters = new List<AppFilter>();
             DatasourcesCategorys = Enum.GetValues(typeof(DatasourceCategory));
             DataSourceTypes = Enum.GetValues(typeof(DataSourceType));
-            packageNames = new List<string>();
+            PackageNames = new List<string>();
             packageVersions = new List<string>();
             rdbmsDatabaseTypes = new List<ConnectionDriversConfig>();
             GetInstallDataSources();
@@ -147,7 +147,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                     var ds = InstalledDataSources.Where(x => x.className == item.classHandler).FirstOrDefault();
                     if (ds != null)
                     {
-                        packageNames.Add(item.PackageName);
+                        PackageNames.Add(item.PackageName);
                         rdbmsDatabaseTypes.Add(item);
                     }
                 }

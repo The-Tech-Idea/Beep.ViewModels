@@ -16,70 +16,13 @@ using TheTechIdea.Beep.MVVM.Utilities;
 
 namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
 {
-    public partial class MySqlConnectionViewModel : BaseViewModel
+    public partial class MySqlConnectionViewModel : DataConnectionViewModel
     {
-        [ObservableProperty]
-        UnitofWork<ConnectionProperties> dBWork;
-
-        [ObservableProperty]
-        ConnectionProperties connection;
-
-        [ObservableProperty]
-        List<AppFilter> filters;
-
-        [ObservableProperty]
-        string selectedCategoryTextValue;
-
-        [ObservableProperty]
-        int selectedCategoryValue;
-
-        [ObservableProperty]
-        DatasourceCategory selectedCategoryItem;
-
-        [ObservableProperty]
-        Array datasourcesCategorys;
-
-        [ObservableProperty]
-        int selectedconnectionidx;
-
-        [ObservableProperty]
-        string selectedconnectionGuid;
-
-        [ObservableProperty]
-        List<string> packageNames;
-
-        [ObservableProperty]
-        List<string> packageVersions;
-
-        [ObservableProperty]
-        string selectedpackage;
-
-        [ObservableProperty]
-        string selectedversion;
-
-        [ObservableProperty]
-        public List<EntityField> fields;
-
         [ObservableProperty]
         List<ConnectionDriversConfig> mySqlDatabaseTypes;
 
         [ObservableProperty]
         ConnectionDriversConfig selectedMySqlDatabaseType;
-
-        [ObservableProperty]
-        string currentDataSourceName;
-
-        [ObservableProperty]
-        string databaseName;
-
-        [ObservableProperty]
-        string password;
-
-        [ObservableProperty]
-        string connectionString;
-
-        [ObservableProperty]
-        string userId;
 
         [ObservableProperty]
         string serverName;
@@ -129,16 +72,8 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         [ObservableProperty]
         List<ConnectionDriversConfig> installedDataSources;
 
-        public ObservableBindingList<ConnectionProperties> DataConnections => DBWork.Units;
-
         public MySqlConnectionViewModel(IDMEEditor dMEEditor, IAppManager visManager) : base(dMEEditor, visManager)
         {
-            DBWork = new UnitofWork<ConnectionProperties>(Editor, true, new ObservableBindingList<ConnectionProperties>(Editor.ConfigEditor.DataConnections), "GuidID");
-            DBWork.Get();
-            Filters = new List<AppFilter>();
-            DatasourcesCategorys = Enum.GetValues(typeof(DatasourceCategory));
-            packageNames = new List<string>();
-            packageVersions = new List<string>();
             mySqlDatabaseTypes = new List<ConnectionDriversConfig>();
             GetInstallDataSources();
 
@@ -154,8 +89,8 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             {
                 if (!string.IsNullOrEmpty(item.PackageName))
                 {
-                    packageNames.Add(item.PackageName);
-                    packageVersions.Add(item.version);
+                    PackageNames.Add(item.PackageName);
+                    PackageVersions.Add(item.version);
                 }
             }
 
