@@ -11,6 +11,8 @@ using System.IO;
 using TheTechIdea.Beep.Addin;
 using TheTechIdea.Beep.ConfigUtil;
 using TheTechIdea.Beep.Vis;
+using TheTechIdea.Beep.Editor.Importing;
+using TheTechIdea.Beep.Helpers.FileandFolderHelpers;
 
 namespace TheTechIdea.Beep.MVVM.ViewModels
 {

@@ -10,6 +10,7 @@ using TheTechIdea.Beep.ConfigUtil;
 using TheTechIdea.Beep.Utilities;
 using System.Linq;
 using TheTechIdea.Beep.Vis;
+using TheTechIdea.Beep.Editor.UOW;
 
 namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
 {
