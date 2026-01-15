@@ -194,7 +194,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             // Filter for STREAM, QUEUE and StreamProcessing categories
             var categoryFilter = new AppFilter
             {
-                FieldName = "Category",
+               FieldName = "Category",
                 FieldType = typeof(DatasourceCategory),
                 Operator = "IN",
                 FilterValue = $"{(int)DatasourceCategory.STREAM},{(int)DatasourceCategory.QUEUE},{(int)DatasourceCategory.StreamProcessing}"

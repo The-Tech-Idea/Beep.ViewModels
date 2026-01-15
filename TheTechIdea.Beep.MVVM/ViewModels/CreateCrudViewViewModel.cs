@@ -127,23 +127,23 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
                     if (Structure.PrimaryKeys.Count == 0)
                     {
                         Editor.AddLogMessage("Fail", $"Could not find primary key for entity {Entityname}, setting first column", DateTime.Now, 0, DatasourceName, Errors.Failed);
-                        PrimaryKey = Structure.Fields.FirstOrDefault().fieldname;
+                        PrimaryKey = Structure.Fields.FirstOrDefault().FieldName;
                         IsPrimarykeyMissing = true;
 
 
                     }
                     else
                     {
-                        if (structure.PrimaryKeys.FirstOrDefault().fieldname == null)
+                        if (structure.PrimaryKeys.FirstOrDefault().FieldName == null)
                         {
                             Editor.AddLogMessage("Fail", $"Could not find primary key for entity {Entityname}, setting first column", DateTime.Now, 0, DatasourceName, Errors.Failed);
-                            PrimaryKey = Structure.Fields.FirstOrDefault().fieldname;
+                            PrimaryKey = Structure.Fields.FirstOrDefault().FieldName;
                             IsPrimarykeyMissing = true;
                             //   return;
                         }
                         else
                         {
-                            PrimaryKey = Structure.PrimaryKeys.FirstOrDefault().fieldname;
+                            PrimaryKey = Structure.PrimaryKeys.FirstOrDefault().FieldName;
                             IsPrimarykeyMissing = false;
                         }
 
@@ -163,7 +163,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
             int idx = DataSource.Entities.FindIndex(x => x.EntityName == Entityname);
             if (idx > -1)
             {
-                DataSource.Entities[idx].PrimaryKeys.Add(new EntityField { fieldname = PrimaryKey });
+                DataSource.Entities[idx].PrimaryKeys.Add(new EntityField {FieldName = PrimaryKey });
             }
         }
         public bool Save()

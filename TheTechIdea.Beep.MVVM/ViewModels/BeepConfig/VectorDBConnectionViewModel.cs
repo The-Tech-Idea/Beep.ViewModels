@@ -229,7 +229,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             // Filter for VectorDB category
             var categoryFilter = new AppFilter
             {
-                FieldName = "Category",
+               FieldName = "Category",
                 FieldType = typeof(DatasourceCategory),
                 Operator = "IN",
                 FilterValue = $"{(int)DatasourceCategory.VectorDB}"

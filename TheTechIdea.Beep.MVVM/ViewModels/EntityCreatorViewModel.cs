@@ -77,7 +77,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
         [RelayCommand]
         public void UpdateFieldName(EntityField field)
         {
-            if (Structure != null && field != null && !string.IsNullOrEmpty(field.fieldname))
+            if (Structure != null && field != null && !string.IsNullOrEmpty(field.FieldName))
             {
                 field.EntityName = Structure.EntityName;
                 IsChanged = true;

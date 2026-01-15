@@ -103,7 +103,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             SelectedCategoryValue = (int)DatasourceCategory.RDBMS;
             SelectedCategoryTextValue = DatasourceCategory.RDBMS.ToString();
 
-            Filters.Add(new AppFilter { FieldName = "DatasourceType", FieldType = typeof(DataSourceType), FilterValue = Enum.GetName(DataSourceType.Postgre), Operator = "=" });
+            Filters.Add(new AppFilter {FieldName = "DatasourceType", FieldType = typeof(DataSourceType), FilterValue = Enum.GetName(DataSourceType.Postgre), Operator = "=" });
             DBWork.Get(Filters);
 
             Port = 5432;

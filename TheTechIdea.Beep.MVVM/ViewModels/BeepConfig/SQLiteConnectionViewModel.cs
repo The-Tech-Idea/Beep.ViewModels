@@ -13,7 +13,7 @@ using TheTechIdea.Beep.Utilities;
 using TheTechIdea.Beep.Helpers;
 using TheTechIdea.Beep.ConfigUtil;
 using TheTechIdea.Beep.MVVM.Utilities;
-using System.Windows.Forms;
+
 
 namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
 {
@@ -110,7 +110,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             SelectedCategoryValue = (int)DatasourceCategory.FILE;
             SelectedCategoryTextValue = DatasourceCategory.FILE.ToString();
 
-            Filters.Add(new AppFilter { FieldName = "DatasourceType", FieldType = typeof(DataSourceType), FilterValue = Enum.GetName(DataSourceType.SqlLite), Operator = "=" });
+            Filters.Add(new AppFilter {FieldName = "DatasourceType", FieldType = typeof(DataSourceType), FilterValue = Enum.GetName(DataSourceType.SqlLite), Operator = "=" });
             DBWork.Get(Filters);
 
             UseUri = false;

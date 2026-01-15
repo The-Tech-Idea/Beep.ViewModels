@@ -171,7 +171,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             SelectedCategoryValue = (int)DatasourceCategory.RDBMS;
             SelectedCategoryTextValue = DatasourceCategory.RDBMS.ToString();
 
-            Filters.Add(new AppFilter { FieldName = "DatasourceType", FieldType = typeof(DataSourceType), FilterValue = Enum.GetName(DataSourceType.FireBird), Operator = "=" });
+            Filters.Add(new AppFilter {FieldName = "DatasourceType", FieldType = typeof(DataSourceType), FilterValue = Enum.GetName(DataSourceType.FireBird), Operator = "=" });
             DBWork.Get(Filters);
 
             Port = 3050;

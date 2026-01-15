@@ -232,7 +232,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                 { 
                     new AppFilter() 
                     { 
-                        FieldName = "GuidID", 
+                       FieldName = "GuidID", 
                         FilterValue = SelectedconnectionGuid, 
                         Operator = "=" 
                     } 
@@ -260,7 +260,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                 { 
                     new AppFilter() 
                     { 
-                        FieldName = "Category", 
+                       FieldName = "Category", 
                         FilterValue = SelectedCategoryTextValue.ToUpper(), 
                         Operator = "=" 
                     } 
@@ -676,7 +676,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                 { 
                     new AppFilter() 
                     { 
-                        FieldName = "GuidID", 
+                       FieldName = "GuidID", 
                         FilterValue = connid, 
                         Operator = "=" 
                     } 
@@ -703,19 +703,19 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                 {
                     new AppFilter() 
                     { 
-                        FieldName = "ConnectionName", 
+                       FieldName = "ConnectionName", 
                         FilterValue = dsname, 
                         Operator = "=" 
                     },
                     new AppFilter() 
                     { 
-                        FieldName = "DatabaseType", 
+                       FieldName = "DatabaseType", 
                         FilterValue = ((int)sourceType).ToString(), 
                         Operator = "=" 
                     },
                     new AppFilter() 
                     { 
-                        FieldName = "Category", 
+                       FieldName = "Category", 
                         FilterValue = category.ToString().ToUpper(), 
                         Operator = "=" 
                     }

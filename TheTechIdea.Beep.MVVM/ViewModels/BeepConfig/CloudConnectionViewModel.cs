@@ -179,7 +179,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             SelectedCategoryTextValue = DatasourceCategory.CLOUD.ToString();
 
             // Filter for CLOUD category
-            Filters.Add(new AppFilter { FieldName = "Category", FieldType = typeof(DatasourceCategory), FilterValue = Enum.GetName(DatasourceCategory.CLOUD), Operator = "=" });
+            Filters.Add(new AppFilter {FieldName = "Category", FieldType = typeof(DatasourceCategory), FilterValue = Enum.GetName(DatasourceCategory.CLOUD), Operator = "=" });
             DBWork.Get(Filters);
 
             UseSSL = true;

@@ -182,7 +182,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             SelectedCategoryTextValue = DatasourceCategory.BigData.ToString();
 
             // Filter for BIGDATA category
-            Filters.Add(new AppFilter { FieldName = "Category", FieldType = typeof(DatasourceCategory), FilterValue =Enum.GetName(DatasourceCategory.BigData), Operator = "=" });
+            Filters.Add(new AppFilter {FieldName = "Category", FieldType = typeof(DatasourceCategory), FilterValue =Enum.GetName(DatasourceCategory.BigData), Operator = "=" });
             DBWork.Get(Filters);
 
             NamenodePort = 9000;

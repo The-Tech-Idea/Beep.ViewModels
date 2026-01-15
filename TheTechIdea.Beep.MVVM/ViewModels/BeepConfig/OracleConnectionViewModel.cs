@@ -78,7 +78,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             SelectedCategoryItem = DatasourceCategory.RDBMS;
             SelectedCategoryValue = (int)DatasourceCategory.RDBMS;
             SelectedCategoryTextValue = DatasourceCategory.RDBMS.ToString();
-            Filters.Add(new AppFilter { FieldName = "DatasourceType", FieldType = typeof(DataSourceType), FilterValue = Enum.GetName(DataSourceType.Oracle), Operator = "=" });
+            Filters.Add(new AppFilter {FieldName = "DatasourceType", FieldType = typeof(DataSourceType), FilterValue = Enum.GetName(DataSourceType.Oracle), Operator = "=" });
             DBWork.Get(Filters);
             MinPoolSize = 1;
             MaxPoolSize = 100;
