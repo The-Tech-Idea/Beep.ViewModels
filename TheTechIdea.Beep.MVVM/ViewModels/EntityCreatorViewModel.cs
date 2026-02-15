@@ -14,6 +14,7 @@ using TheTechIdea.Beep.ConfigUtil;
 using TheTechIdea.Beep.Vis;
 using TheTechIdea.Beep.Utilities;
 using System.Drawing;
+using TheTechIdea.Beep.Editor.Migration;
 
 namespace TheTechIdea.Beep.MVVM.ViewModels
 {
@@ -48,6 +49,47 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
             // dBWork = new UnitofWork<EntityField>(Editor, true, new ObservableBindingList<EntityField>(fields), "GuidID");
             //dBWork.PreInsert += Unitofwork_PreInsert;
 
+        }
+
+        private IDataSource EnsureConnectionOpen()
+        {
+            if (SourceConnection == null && !string.IsNullOrEmpty(Datasourcename))
+            {
+                SourceConnection = Editor.GetDataSource(Datasourcename);
+            }
+
+            if (SourceConnection == null)
+            {
+                Editor.AddLogMessage("Beep", "Datasource not Found", DateTime.Now, 0, null, Errors.Failed);
+                return null;
+            }
+
+            if (SourceConnection.ConnectionStatus != ConnectionState.Open)
+            {
+                Editor.OpenDataSource(Datasourcename);
+            }
+
+            if (SourceConnection.ConnectionStatus != ConnectionState.Open)
+            {
+                Editor.AddLogMessage("Beep", "Datasource not Open", DateTime.Now, 0, null, Errors.Failed);
+                return null;
+            }
+
+            return SourceConnection;
+        }
+
+        private void RefreshFieldWork(EntityStructure entity)
+        {
+            if (entity == null)
+            {
+                return;
+            }
+
+            entity.Fields ??= new List<EntityField>();
+            OldFields = entity.Fields;
+            DBWork = new UnitofWork<EntityField>(Editor, true, new ObservableBindingList<EntityField>(entity.Fields), "GuidID");
+            DBWork.PreInsert -= Unitofwork_PreInsert;
+            DBWork.PreInsert += Unitofwork_PreInsert;
         }
 
         private void Unitofwork_PreInsert(object sender, UnitofWorkParams e)
@@ -88,32 +130,55 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
         {
             if (!string.IsNullOrEmpty(EntityName))
             {
-                if(SourceConnection==null)
+                var connection = EnsureConnectionOpen();
+                if (connection == null)
                 {
-                    SourceConnection = Editor.GetDataSource(Datasourcename);
-                }
-                if(SourceConnection == null)
-                {
-                    Editor.AddLogMessage("Beep", "Datasource not Found", DateTime.Now, 0, null, Errors.Failed);
                     return;
                 }
-                if(SourceConnection.ConnectionStatus != ConnectionState.Open)
-                {
-                    Editor.AddLogMessage("Beep", "Datasource not Open", DateTime.Now, 0, null, Errors.Failed);
-                    return;
-                }
-                Structure = SourceConnection.GetEntityStructure(EntityName,true);
+
+                Structure = connection.GetEntityStructure(EntityName, true);
                 if (Structure != null)
                 {
                     IsChanged = false;
                     IsNew = false;
-               //     Fields= Structure.Fields;
-                    OldFields = Structure.Fields;
-                    DBWork = new UnitofWork<EntityField>(Editor, true, new ObservableBindingList<EntityField>(Structure.Fields), "GuidID");
-                    DBWork.PreInsert -= Unitofwork_PreInsert;
-                    DBWork.PreInsert += Unitofwork_PreInsert;
+                    RefreshFieldWork(Structure);
                 }
             }
+        }
+
+        [RelayCommand]
+        public void LoadOrCreateEntityStructure(string entityName)
+        {
+            if (string.IsNullOrWhiteSpace(entityName))
+            {
+                return;
+            }
+
+            EntityName = entityName;
+            var connection = EnsureConnectionOpen();
+            if (connection == null)
+            {
+                return;
+            }
+
+            if (connection.CheckEntityExist(entityName))
+            {
+                Structure = connection.GetEntityStructure(entityName, true);
+                IsNew = false;
+            }
+            else
+            {
+                Structure = new EntityStructure
+                {
+                    EntityName = entityName,
+                    DatasourceEntityName = entityName,
+                    Fields = new List<EntityField>()
+                };
+                IsNew = true;
+            }
+
+            IsChanged = false;
+            RefreshFieldWork(Structure);
         }
         [RelayCommand]
         public void UpdateFieldTypes()
@@ -133,12 +198,12 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
         {
             if (entity == null)
             {
-                Structure = entity;
-                IsChanged = false;
-                Structure = entity;
-                OldFields = Structure.Fields;
-                DBWork = new UnitofWork<EntityField>(Editor, true, new ObservableBindingList<EntityField>(Structure.Fields), "GuidID");
+                return;
             }
+
+            Structure = entity;
+            IsChanged = false;
+            RefreshFieldWork(entity);
         }
         [RelayCommand]
         public void SaveEntity()
@@ -150,9 +215,6 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
                     Editor.AddLogMessage("Beep", "No Fields Exist", DateTime.Now, 0, null, Errors.Failed);
                     return;
                 }
-                IsChanged = false;
-                IsNew = false;
-
                 ApplyChanges();
                 DBWork.Commit(Logprogress,Token);
                 OldFields = Structure.Fields;
@@ -164,53 +226,76 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
         {
             if (Structure != null && IsChanged)
             {
-                if(!IsNew)
+                try
                 {
-
-                }
-                else
-                {
-                    try
+                    var connection = EnsureConnectionOpen();
+                    if (connection == null)
                     {
-                       // Apply for New Entity
-                        IDataSource SourceConnection = Editor.GetDataSource(Datasourcename);
-                        Editor.OpenDataSource(Datasourcename);
-                        //SourceConnection.Dataconnection.OpenConnection();
-                        SourceConnection.ConnectionStatus = SourceConnection.Dataconnection.ConnectionStatus;
-                        if (SourceConnection.ConnectionStatus == ConnectionState.Open)
-                        {
-                            Structure.DatasourceEntityName = Structure.EntityName;
-
-                            SourceConnection.CreateEntityAs(Structure);
-                            if (Editor.ErrorObject.Flag == Errors.Ok)
-                            {
-                               
-                                Editor.AddLogMessage("Success", "Table Creation Success", DateTime.Now, -1, "", Errors.Failed);
-                            }
-                            else
-                            {
-                                string mes = "Entity Creation Failed";
-                               
-                                Editor.AddLogMessage("Create Table", mes, DateTime.Now, -1, mes, Errors.Failed);
-                            }
-
-                        }
-                        else
-                        {
-                           
-                            Editor.AddLogMessage("Fail", "Table Creation Not Success Could not open Database", DateTime.Now, -1, "", Errors.Failed);
-                        }
-
+                        return;
                     }
-                    catch (Exception ex)
-                    {
-                        string mes = "Entity Creation Failed";
-                      
-                        Editor.AddLogMessage(ex.Message, mes, DateTime.Now, -1, mes, Errors.Failed);
-                    };
 
+                    Structure.DatasourceEntityName = Structure.EntityName;
+                    Structure.Fields = DBWork?.Units?.ToList() ?? Structure.Fields;
+
+                    var migration = new MigrationManager(Editor, connection);
+                    IErrorsInfo result;
+
+                    if (connection.CheckEntityExist(Structure.EntityName))
+                    {
+                        result = migration.EnsureEntity(Structure, createIfMissing: false, addMissingColumns: true);
+                    }
+                    else
+                    {
+                        var created = connection.CreateEntityAs(Structure);
+                        result = created
+                            ? new ErrorsInfo { Flag = Errors.Ok, Message = "Entity created" }
+                            : connection.ErrorObject ?? new ErrorsInfo { Flag = Errors.Failed, Message = "Entity creation failed" };
+                    }
+
+                    if (result.Flag == Errors.Ok)
+                    {
+                        Editor.AddLogMessage("Success", result.Message ?? "Entity updated", DateTime.Now, -1, "", Errors.Ok);
+                        IsChanged = false;
+                        IsNew = false;
+                    }
+                    else
+                    {
+                        Editor.AddLogMessage("Fail", result.Message ?? "Entity update failed", DateTime.Now, -1, "", Errors.Failed);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Editor.AddLogMessage("Exception", ex.Message, DateTime.Now, -1, ex.ToString(), Errors.Failed);
                 }
 
+            }
+        }
+
+        [RelayCommand]
+        public void DeleteEntity()
+        {
+            if (string.IsNullOrEmpty(EntityName))
+            {
+                return;
+            }
+
+            var connection = EnsureConnectionOpen();
+            if (connection == null)
+            {
+                return;
+            }
+
+            var migration = new MigrationManager(Editor, connection);
+            var result = migration.DropEntity(EntityName);
+            if (result.Flag == Errors.Ok)
+            {
+                Editor.AddLogMessage("Success", result.Message ?? "Entity deleted", DateTime.Now, -1, "", Errors.Ok);
+                Structure = null;
+                IsNew = true;
+            }
+            else
+            {
+                Editor.AddLogMessage("Fail", result.Message ?? "Entity delete failed", DateTime.Now, -1, "", Errors.Failed);
             }
         }
         [RelayCommand]
@@ -221,16 +306,16 @@ namespace TheTechIdea.Beep.MVVM.ViewModels
                 Editor.AddLogMessage("Beep", "Changes not Saved", DateTime.Now, 0, null, Errors.Failed);
                 return;
             }
-            Structure = new EntityStructure();
-            if (Structure != null && IsChanged && !string.IsNullOrEmpty(Datasourcename))
+            Structure = new EntityStructure
             {
-                IsChanged = false;
-                IsNew = true;
+                EntityName = EntityName,
+                DatasourceEntityName = EntityName,
+                Fields = new List<EntityField>()
+            };
 
-                DBWork = new UnitofWork<EntityField>(Editor, true, new ObservableBindingList<EntityField>(Structure.Fields), "GuidID");
-                DBWork.PreInsert -= Unitofwork_PreInsert;
-                DBWork.PreInsert += Unitofwork_PreInsert;
-            }
+            IsChanged = true;
+            IsNew = true;
+            RefreshFieldWork(Structure);
         }
         
     }
