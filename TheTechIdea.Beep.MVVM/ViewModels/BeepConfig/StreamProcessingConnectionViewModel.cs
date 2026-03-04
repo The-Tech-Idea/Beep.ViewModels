@@ -153,7 +153,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
             GetInstallDataSources();
 
             // Filter for STREAM and QUEUE data sources
-            var streamCategories = new[] { DatasourceCategory.STREAM, DatasourceCategory.QUEUE, DatasourceCategory.StreamProcessing };
+            var streamCategories = new[] { DatasourceCategory.STREAM, DatasourceCategory.QUEUE, DatasourceCategory.STREAM };
             foreach (var category in streamCategories)
             {
                 foreach (var item in Editor.ConfigEditor.DataDriversClasses.Where(x => x.DatasourceCategory == category))
@@ -187,9 +187,9 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                 SelectedDataSourceType = streamProcessingDatabaseTypes[0].DatasourceType;
             }
 
-            SelectedCategoryItem = DatasourceCategory.StreamProcessing;
-            SelectedCategoryValue = (int)DatasourceCategory.StreamProcessing;
-            SelectedCategoryTextValue = DatasourceCategory.StreamProcessing.ToString();
+            SelectedCategoryItem = DatasourceCategory.STREAM;
+            SelectedCategoryValue = (int)DatasourceCategory.STREAM;
+            SelectedCategoryTextValue = DatasourceCategory.STREAM.ToString();
 
             // Filter for STREAM, QUEUE and StreamProcessing categories
             var categoryFilter = new AppFilter
@@ -197,7 +197,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
                FieldName = "Category",
                 FieldType = typeof(DatasourceCategory),
                 Operator = "IN",
-                FilterValue = $"{(int)DatasourceCategory.STREAM},{(int)DatasourceCategory.QUEUE},{(int)DatasourceCategory.StreamProcessing}"
+                FilterValue = $"{(int)DatasourceCategory.STREAM},{(int)DatasourceCategory.QUEUE},{(int)DatasourceCategory.STREAM}"
             };
             Filters.Add(categoryFilter);
             DBWork.Get(Filters);
@@ -503,7 +503,7 @@ namespace TheTechIdea.Beep.MVVM.ViewModels.BeepConfig
         private void GetInstallDataSources()
         {
             installedDataSources = new List<AssemblyClassDefinition>();
-            var streamCategories = new[] { DatasourceCategory.STREAM, DatasourceCategory.QUEUE, DatasourceCategory.StreamProcessing };
+            var streamCategories = new[] { DatasourceCategory.STREAM, DatasourceCategory.QUEUE, DatasourceCategory.STREAM };
             foreach (var category in streamCategories)
             {
                 foreach (var item in Editor.ConfigEditor.DataDriversClasses.Where(x => x.DatasourceCategory == category))
