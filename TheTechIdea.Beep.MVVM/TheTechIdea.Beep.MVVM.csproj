@@ -28,9 +28,9 @@
 	</Target>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageReference Include="TheTechIdea.Beep.DataManagementEngine" Version="2.0.85" />
-    <PackageReference Include="TheTechIdea.Beep.DataManagementModels" Version="2.0.138" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.1" />
+    <PackageReference Include="TheTechIdea.Beep.DataManagementEngine" Version="2.0.86" />
+    <PackageReference Include="TheTechIdea.Beep.DataManagementModels" Version="2.0.139" />
     <PackageReference Include="TheTechIdea.Beep.Vis.Modules" Version="2.0.38" />
   </ItemGroup>
 
